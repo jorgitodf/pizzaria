@@ -5,51 +5,44 @@ namespace Core;
 abstract class Helpers {
     
     public static function validaSenha($senha) {
-        $array = array('erroSenha'=>'', 'senha'=>$senha);
+        $array = array('erroSenha'=>'');
         if (empty($senha) || $senha = "") {
-            $array['erroSenha'] = "<div class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_senha'>Preencha a sua Senha!</div>";
-        } elseif (!empty($senha)) {
-            $array['senha'] = $senha;
+            $array['erroSenha'] = "Preencha a sua Senha!";
         }
         return $array;
     }
     
     public static function validaEmail($email) {
-        $array = array('erroEmail'=>'', 'email'=>$email);
+        $array = array('erroEmail'=>'');
         if (empty($email) || $email = "") {
-            $array['erroEmail'] = "<div class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_email'>Preencha o Campo do E-mail!</div>";
-        } elseif (!empty($email)) {
-            $array['email'] = $email;
+            $array['erroEmail'] = "Preencha o Campo do E-mail!";
         }
         return $array;
     }
-    
-    public static function validaCadastroUsuario($nome, $email, $senha, $senha_confirm, $tel_celular, $cpf) {
+
+    public static function validaNomeCadastro($nome) {
         $array = array();
         if (empty($nome)) {
             $array['erroNome'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_nome_cliente'>Preencha o seu Nome Completo!</span><br/>";
-        } elseif (ctype_alpha($nome) && !empty($nome)) {
-            $array['erroNome'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_nome_cliente_sem_numeros'>O Campo Nome não aceita Números!</span><br/>";
-        } else {
-            $array['nome'] = $nome;
+        } elseif (preg_match('/^[a-z A-Z]+$/', $nome) == false) {
+            $array['erroNomeNumero'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_nome_cliente_sem_numeros'>O Campo Nome não aceita Números!</span><br/>";
         }
-        if (empty($email)) {
-            $array['erroEmail'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_email_cad_cliente'>Preencha o seu E-mail!</span><br/>";
-        } elseif (!empty ($email) && !filter_var($email, FILTER_SANITIZE_EMAIL)) {
-            $array['erroEmail'] = "<div class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_email_cad_cliente_n_val'>O E-mail informado não é Válido!</div>";
-        } else {
-            $array['email'] = $email;
-        }
-        if (empty($senha)) {
-            $array['erroSenha'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_senha_cad_cliente'>Preencha a sua Senha!</span><br/>";
-        } else {
-            $array['senha'] = $senha;
-        }
+        return $array;
+    }
+
+    public static function validaConfirmaSenha($senha, $senha_confirm) {
+        $array = array();
         if (empty($senha_confirm)) {
             $array['erroSenha2'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_senha2_cad_cliente'>Digite a Confirmação da sua Senha!</span><br/>";
-        } else {
-            $array['senha_confirm'] = $senha_confirm;
+        } elseif ($senha != $senha_confirm) {
+            $array['erroSenha2'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_senha2_cad_cliente'>As Senhas Não São Iguais!</span><br/>";
         }
+        return $array;
+    }
+
+
+    public static function validaCadastroUsuario($tel_celular, $cpf) {
+        $array = array();
         if (empty($tel_celular)) {
             $array['erroTelefone'] = "<span class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_telef_cad_cliente'>Digite o seu Número de Telefone!</span><br/>";
         } else {
@@ -83,6 +76,28 @@ abstract class Helpers {
         $cpf1 = str_replace("-", "", $cpf);
         $cpf2 = str_replace(".", "", $cpf1);
         return $cpf2;
+    }
+
+    public static function cryptySenha($senha) {
+        $custo = '08';
+        $salt = 'Cf1f11ePArKlBJomM0F6aJ';
+        $hash = crypt($senha, '$2a$' . $custo . '$' . $salt . '$');
+        return $hash;
+    }
+
+    public static function retornaHora($paramentro) {
+        date_default_timezone_set('America/Sao_Paulo');
+        if ($paramentro == 'dataAtual') {
+            return date("Y-m-d H:i:s");
+        }
+    }
+
+    public static function consultaSenhaCrypty($senha, $hash) {
+        if (crypt($senha, $hash) === $hash) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

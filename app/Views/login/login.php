@@ -30,12 +30,12 @@
             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6" id="div_erro_login">
                 <?php 
                     if (isset($this->view->retornoEmail)) {
-                        echo $this->view->retornoEmail['erroEmail'];
+                        echo "<div class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_senha'>{$this->view->retornoEmail['erroEmail']}</div>";
                     } else {
                         echo "";
                     }
                     if (isset($this->view->retornoSenha)) {
-                        echo $this->view->retornoSenha['erroSenha'];
+                        echo "<div class='alert alert-danger msg_erro_validacao' role='alert' id='msg_erro_email'>{$this->view->retornoSenha['erroSenha']}</div>";
                     } else {
                         echo "";
                     }
@@ -44,6 +44,7 @@
                     if (isset($this->view->erro)) {
                         echo $this->view->erro['erroSemCadastro'];
                         echo $this->view->erro['erroSenha'];
+                        echo $this->view->erro['erroSenhaNaoConfere'];
                     } else {
                         echo "";
                     }

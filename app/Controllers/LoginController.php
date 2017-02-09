@@ -7,11 +7,11 @@ use Core\Container;
 
 class LoginController extends BaseController {
 
-    protected $modelCliente;
-    
+    protected $modelLogin;
+
     public function __construct() {
         parent::__construct();  
-        $this->modelCliente = Container::getModel("Cliente");
+        $this->modelLogin = Container::getModel("Login");
     }
     
     public function index() {
@@ -19,20 +19,23 @@ class LoginController extends BaseController {
         if (isset($_POST['email']) &&  isset($_POST['senha'])) {
             $email = trim(addslashes(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING)));
             $senha = trim(addslashes(filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_STRING)));
-            if ($this->modelCliente->setEmail($email)['erroEmail'] == true) {
-                $this->view->retornoEmail = $this->modelCliente->setEmail($email);
+            if ($this->modelLogin->setEmail($email)['erroEmail'] == true) {
+                $this->view->retornoEmail = $this->modelLogin->setEmail($email);
+            } elseif ($this->modelLogin->setEmail($email)['erroSemCadastro'] == true) {
+                $this->view->erro = $this->modelLogin->setEmail($email);
             } else {
-                $this->view->email = $this->modelCliente->getEmail();
+                $this->view->email = $this->modelLogin->getEmail();
             }
-            if ($this->modelCliente->setSenha($senha)['erroSenha'] == true) {
-                $this->view->retornoSenha = $this->modelCliente->setSenha($senha);
+            if ($this->modelLogin->setSenha($senha)['erroSenha'] == true) {
+                $this->view->retornoSenha = $this->modelLogin->setSenha($senha);
+            } elseif ($this->modelLogin->setSenha($senha)['erroSenhaNaoConfere'] == true) {
+                $this->view->erro = $this->modelLogin->setSenha($senha);
             } else {
-                $this->view->senha = $this->modelCliente->getSenha();
+                $this->view->senha = $this->modelLogin->getSenha();
             }
-            if ($this->modelCliente->setEmail($email)['erroEmail'] == false && $this->modelCliente->setSenha($senha)['erroSenha'] == false) {
-                $this->view->erro = $this->modelCliente->verificaExisteEmail($this->modelCliente->getEmail());
+            if ($this->modelLogin->setEmail($email) == false && $this->modelLogin->setSenha($senha) == false) {
+                echo "Efetuar o Login com Sessão do Usuário no Sistema";exit;
             }
-            $this->modelCliente->getSenha();
         }
         $this->renderView('login/login', 'layout');
     }

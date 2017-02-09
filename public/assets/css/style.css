@@ -82,8 +82,8 @@
         width: 75px;
     }
     #div_botoes_cadas_cliente {
-        padding-top: 45px;
-        padding-bottom: 45px;
+        padding-top: 25px;
+        padding-bottom: 25px;
     }
     #msg_erro_nome_cliente, #msg_erro_nome_cliente_sem_numeros, #msg_erro_email_cad_cliente, #msg_erro_senha_cad_cliente, 
     #msg_erro_email_cad_cliente_n_val, #msg_erro_senha2_cad_cliente, #msg_erro_telef_cad_cliente, #msg_erro_cpf_cad_cliente {
@@ -93,6 +93,21 @@
         font-size: 11px;
         width: 90%;
         text-align: center;
+    }
+    #msg_cad_cliente_sucesso {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-weight: bold;
+        margin-top: 6%;
+        text-align: center;
+    }
+    #msg_erro_cad_cliente {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        font-weight: bold;
+        text-align: justify;
+        font-size: 12px;
+        margin-top: 2.7%;
     }
 
     #div_erros_cadas_cliente {

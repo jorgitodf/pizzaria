@@ -19,7 +19,7 @@ class Cliente extends BaseModel {
     private $data_cadastro;
 
     public function __construct($pdo, $cpf, $tipo_cliente, $nome_completo, $data_nascimento, $email, $senha, $data_cadastro) {
-        parent::__construct($pdo);    
+        parent::__construct($pdo);
         $this->cpf = $cpf;
         $this->tipo_cliente = $tipo_cliente;
         $this->nome_completo = $nome_completo;
@@ -32,19 +32,88 @@ class Cliente extends BaseModel {
     public function getTable() {
         return $this->table;
     }
-    
 
-    public function setEmail($email) {
+
+    /**
+     * @return mixed
+     */
+    public function getNomeCompleto()
+    {
+        return $this->nome_completo;
+    }
+
+    /**
+     * @param $nome_completo
+     * @return array
+     */
+    public function setNomeCompleto($nome_completo)
+    {
+        if (Helpers::validaNomeCadastro($nome_completo)) {
+            return Helpers::validaNomeCadastro($nome_completo);
+        } else {
+            $this->nome_completo = $nome_completo;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipoCliente()
+    {
+        return $this->tipo_cliente;
+    }
+
+    /**
+     * @param mixed $tipo_cliente
+     */
+    public function setTipoCliente($tipo_cliente)
+    {
+        $this->tipo_cliente = $tipo_cliente;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataCadastro()
+    {
+        return $this->data_cadastro;
+    }
+
+    /**
+     * @param mixed $data_cadastro
+     */
+    public function setDataCadastro($data_cadastro)
+    {
+        $this->data_cadastro = $data_cadastro;
+    }
+
+
+    /**
+     * @param $email
+     * @return array|mixed
+     */
+    public function setEmail($email)
+    {
         if (Helpers::validaEmail($email)['erroEmail'] == true) {
             return Helpers::validaEmail($email);
+        } elseif ($this->verificaExisteEmail($email)['emailExiste'] == true) {
+            return $this->verificaExisteEmail($email);
         } else {
             $this->email = $email;
         }
     }
+
+    /**
+     * @return mixed
+     */
     public function getEmail() {
         return $this->email;
     }
-    
+
+    /**
+     * @param $senha
+     * @return array
+     */
     public function setSenha($senha) {
         if (Helpers::validaSenha($senha)['erroSenha'] == true) {
             return Helpers::validaSenha($senha);
@@ -52,10 +121,35 @@ class Cliente extends BaseModel {
             $this->senha = $senha;
         }
     }
+
+    /**
+     * @return mixed
+     */
     public function getSenha() {
         return $this->senha;
     }
 
+    public function addCliente() {
+        try {
+            $this->pdo->beginTransaction();
+            $senhaCryp = Helpers::cryptySenha($this->senha);
+            $dataCadastro = Helpers::retornaHora('dataAtual');
+            $stmt = $this->pdo->prepare("INSERT INTO tb_cliente (tipo_cliente, nome_completo, email, senha, data_cadastro, 
+                    fk_id_permissao_grupo) VALUES (?,?,?,?,?,?)");
+            $stmt->bindValue(1, 'Cliente', PDO::PARAM_STR);
+            $stmt->bindValue(2, $this->nome_completo, PDO::PARAM_STR);
+            $stmt->bindValue(3, $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(4, $senhaCryp, PDO::PARAM_STR);
+            $stmt->bindValue(5, $dataCadastro, PDO::PARAM_STR);
+            $stmt->bindValue(6, 2, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->pdo->commit();
+            return true;
+        } catch (PDOException $exc) {
+            $this->pdo->rollback();
+            return $exc->getMessage();
+        }
+    }
 
     
     public function getAllClientes() {
@@ -74,18 +168,18 @@ class Cliente extends BaseModel {
         }
     }
     
-    public function verificaExisteEmail() {
+    public function verificaExisteEmail($email) {
         try {
-            $query = "SELECT email, senha FROM {$this->table} WHERE email = ?";
+            $query = "SELECT email FROM {$this->table} WHERE email = ?";
             $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(1, $this->email, PDO::PARAM_INT);
+            $stmt->bindValue(1, $email, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll();
             $stmt->closeCursor();
             if (empty($result[0]->email)) {
                 $array['erroSemCadastro'] = "<div class='alert alert-danger' id='msg_erro_email_nao_cadastrado' role='alert'>E-mail não Cadastrado no Sistema. Faça o seu cadastro!</div>";
-            } elseif ($result[0]->email && ($result[0]->senha != $this->senha)) {
-                $array['erroSenha'] = "<div class='alert alert-danger' role='alert' id='msg_erro_senha_nao_confere'>A senha digitada não confere com a senha Cadastrada!!</div>";
+            } elseif ($result[0]->email == $email) {
+                $array['emailExiste'] = "E-mail já Cadastrado!";
             }
             return $array;
         } catch (PDOException $exc) {
