@@ -15,7 +15,13 @@
         <![endif]-->
     </head>
     <header id="header">
-        <?php require_once __DIR__ . "/menu.php"; ?>
+        <?php
+            if (!isset($_SESSION['ccUser']) && empty($_SESSION['ccUser'])) {
+                require_once __DIR__ . "/menu.php";
+            } else {
+                require_once __DIR__ . "/menulog.php";
+            }
+        ?>
     </header>
     <body>
         <main>    
@@ -31,6 +37,16 @@
                 $("#cpf").mask("999.999.999-99");
                 $("#tel_celular").mask("(99) 99999-9999");
             });
+            $(function(){
+                $("#dropdown_menu").mouseover(function(){
+                    $("#dropdown-content").css("display", "block");
+                });
+            });
+            $(function () {
+                $("#dropdown-content").mouseleave(function(){
+                    $("#dropdown-content").css("display", "none");
+                });
+            })
         </script>
     </body>
 </html>

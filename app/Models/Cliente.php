@@ -129,6 +129,29 @@ class Cliente extends BaseModel {
         return $this->senha;
     }
 
+    public function logarUsuario($email) {
+        try {
+            $query = "SELECT id_cliente, cpf, nome_completo, fk_id_permissao_grupo FROM {$this->table} WHERE email = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $email, PDO::PARAM_STR);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $row = $stmt->fetch();
+                $_SESSION['ccUser']['id_cliente'] = $row->id_cliente;
+                $_SESSION['ccUser']['cpf'] = $row->cpf;
+                $_SESSION['ccUser']['nome_completo'] = $row->nome_completo;
+                $_SESSION['ccUser']['permissao'] = $row->fk_id_permissao_grupo;
+                return true;
+            } 
+            return false;
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            }
+            exit;
+        }
+    }
+
     public function addCliente() {
         try {
             $this->pdo->beginTransaction();
@@ -185,6 +208,30 @@ class Cliente extends BaseModel {
         } catch (PDOException $exc) {
             if ($exc->getCode() == '42S02') {
                 echo "A Tabela <b>{$this->table}</b> Ainda Não Existe.."; 
+            }
+            exit;
+        }
+    }
+
+    public function getClienteEnderecoById($id) {
+        try {
+            $query = "SELECT cli.id_cliente as id, cli.nome_completo as nome, log.nome_logradouro as log, end.complemento as compl, 
+            end.numero as num, bai.nome_bairro as bai, cid.nome_cidade as cid, uf.sigla_uf as uf FROM tb_cliente as cli JOIN tb_endereco as end ON 
+            (end.fk_id_cliente = cli.id_cliente) JOIN tb_logradouro as log ON (log.id_logradouro = end.fk_id_logradouro)
+            JOIN tb_bairro as bai ON (bai.id_bairro = end.fk_id_bairro) JOIN tb_cidade as cid ON (cid.id_cidade = bai.fk_id_cidade)
+            JOIN tb_uf as uf ON (cid.fk_id_uf = uf.id_uf) WHERE cli.id_cliente = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $id, PDO::PARAM_INT);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $row = $stmt->fetchAll();
+                $stmt->closeCursor();
+                return $row;
+            }
+            return false;
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
             }
             exit;
         }

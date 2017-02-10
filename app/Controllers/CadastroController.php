@@ -9,6 +9,7 @@ use Core\Helpers;
 class CadastroController extends BaseController {
 
     protected $modelCliente;
+    protected $modelLogradouro;
 
     /**
      * CadastroController constructor.
@@ -16,6 +17,7 @@ class CadastroController extends BaseController {
     public function __construct() {
         parent::__construct();
         $this->modelCliente = Container::getModel("Cliente");
+        $this->modelLogradouro = Container::getModel("Logradouro");
     }
 
     public function index() {
@@ -64,4 +66,9 @@ class CadastroController extends BaseController {
         $this->renderView('cadastro/index', 'layout');        
     }
 
+    public function cadastrarEndereco() {
+        $this->setPageTitle('Endereço');
+        $this->view->lograrouros = $this->modelLogradouro->getLogradouros();
+        $this->renderView('endereco/index', 'layout');
+    }
 }

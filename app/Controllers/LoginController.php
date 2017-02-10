@@ -4,14 +4,17 @@ namespace App\Controllers;
 
 use Core\BaseController;
 use Core\Container;
+use Core\Redirect;
 
 class LoginController extends BaseController {
 
     protected $modelLogin;
+    protected $modelCliente;
 
     public function __construct() {
         parent::__construct();  
         $this->modelLogin = Container::getModel("Login");
+        $this->modelCliente = Container::getModel("Cliente");
     }
     
     public function index() {
@@ -34,7 +37,12 @@ class LoginController extends BaseController {
                 $this->view->senha = $this->modelLogin->getSenha();
             }
             if ($this->modelLogin->setEmail($email) == false && $this->modelLogin->setSenha($senha) == false) {
-                echo "Efetuar o Login com Sessão do Usuário no Sistema";exit;
+                if ($this->modelCliente->logarUsuario($this->modelLogin->getEmail())) {
+                    header("Location: /");
+                    exit;
+                } else {
+                    echo "Acesso Negado";
+                }
             }
         }
         $this->renderView('login/login', 'layout');

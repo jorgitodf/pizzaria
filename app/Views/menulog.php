@@ -13,15 +13,13 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav" id="nav_bar_info">
-                <li class="dropdown" id="dropdown_menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sobre a Pizzaria</a>
-                    <ul class="dropdown-menu" id="dropdown-content">
-                        <li><a href="#">Quem Somos</a></li>
-                        <li><a href="#">Termos e Condições de Uso</a></li>
-                        <li><a href="#">Privacidade</a></li>
-                    </ul>
+            <ul class="nav navbar-nav" id="ul_nav_nome_user">
+                <li>
+                    <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>
                 </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="ul_logout">
+                <li><a href="/login/logout">Logout</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

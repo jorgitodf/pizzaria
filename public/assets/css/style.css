@@ -9,13 +9,39 @@
         background-color: #A0522D;
         border: solid #A0522D;
     }
+    #nav_bar_info {
+        margin-left: 30%;
+    }
+    #nav_bar_info > li > a {
+        color: white;
+        background-color: #A0522D;
+    }
+    #dropdown-content {
+        display: none;
+        margin-top: 2px;
+        margin-left: -45%;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
+    #ul_logout > li > a {
+        color: white;
+    }
+    #ul_nav_nome_user {
+        margin-left: 45%;
+        margin-top: 1.1%;
+    }
+    #ul_nav_nome_user > li > span {
+        color: white;
+    }
     #titulo_site_nav {
         color: white;
         font-family: Bookman;
         font-size: 28px;
         text-shadow: 0.1em 0.1em 0.20em #333; 
     }
-
     #div_login {
         margin-left: 15%;
         margin-top: 6%;
@@ -168,6 +194,18 @@
     }
     #section_login {
         height: 100%;
+    }
+
+    /*PAGINA SEM ENDEREÇO*/
+    #section_sem_end {
+        height: 100%;
+    }
+    #div_sem_end {
+        margin-left: 30%;
+        margin-top: 4%;
+    }
+    #btn_cad_end {
+        width: 88%;
     }
 
 }

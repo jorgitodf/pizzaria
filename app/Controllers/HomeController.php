@@ -21,7 +21,17 @@ class HomeController extends BaseController {
     
     public function index() {
         $this->setPageTitle('Home');
-        $this->renderView('home/index', 'layout');
+        if (isset($_SESSION['ccUser'])) {
+            $idCliente = $_SESSION['ccUser']['id_cliente'];
+            if ($this->modelCliente->getClienteEnderecoById($idCliente) == true) {
+                $this->renderView('home/index', 'layout');
+            } else {
+                $this->renderView('cadastro/endereco', 'layout');
+            }
+        }
+
+
+
     }
 
 }
