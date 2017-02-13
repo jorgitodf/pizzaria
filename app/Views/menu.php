@@ -13,6 +13,7 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <?php if (!isset($_SESSION['ccUser']) && empty($_SESSION['ccUser'])): ?>
             <ul class="nav navbar-nav" id="nav_bar_info">
                 <li class="dropdown" id="dropdown_menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sobre a Pizzaria</a>
@@ -23,6 +24,35 @@
                     </ul>
                 </li>
             </ul>
+            <?php else: ?>
+            <?php if (isset($this->view->permissao) && $this->view->permissao == true): ?>
+                <ul class="nav navbar-nav" id="ul_nav_nome_user_admin">
+                    <li>
+                        <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav" id="nav_bar_admin">
+                    <li class="dropdown" id="dropdown_menu_admin">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administração</a>
+                        <ul class="dropdown-menu" id="dropdown-content_admin">
+                            <li><a href="/permissoes">Permissões</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="ul_logout">
+                    <li><a href="/login/logout">Logout</a></li>
+                </ul>
+            <?php else: ?>
+                <ul class="nav navbar-nav" id="ul_nav_nome_user">
+                    <li>
+                        <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="ul_logout">
+                    <li><a href="/login/logout">Logout</a></li>
+                </ul>
+            <?php endif; ?>
+            <?php endif; ?>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>

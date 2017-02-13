@@ -9,10 +9,14 @@ use Core\Redirect;
 class HomeController extends BaseController {
     
     protected $modelCliente;
+    protected $modelPermissoes;
+    protected $modelEndereco;
 
     public function __construct() {
         parent::__construct();
         $this->modelCliente = Container::getModel("Cliente");
+        $this->modelPermissoes = Container::getModel("Permissoes");
+        $this->modelEndereco = Container::getModel("Endereco");
         if ($this->modelCliente->isLogged() == false) {
             Redirect::route('/login');
             exit;
@@ -21,17 +25,14 @@ class HomeController extends BaseController {
     
     public function index() {
         $this->setPageTitle('Home');
-        if (isset($_SESSION['ccUser'])) {
-            $idCliente = $_SESSION['ccUser']['id_cliente'];
-            if ($this->modelCliente->getClienteEnderecoById($idCliente) == true) {
-                $this->renderView('home/index', 'layout');
-            } else {
-                $this->renderView('cadastro/endereco', 'layout');
-            }
+        $this->modelCliente->setLoggedUser();
+        $this->modelCliente->getUserInfo();
+        
+        if (!$this->modelCliente->getUserInfoUser()['complemento']) {
+            $this->renderView('cadastro/endereco', 'layout', 'menu');
         }
-
-
-
+        $this->view->permissao = $this->modelCliente->possuiPermissao('completo');
+        $this->renderView('home/index', 'layout', 'menu');
     }
 
 }

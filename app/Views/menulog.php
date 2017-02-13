@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav" id="ul_nav_nome_user">
                 <li>
-                    <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>
+                    <span><b>Seja bem Vindo(a):</b> <?php echo $this->view->nome; ?></span>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="ul_logout">

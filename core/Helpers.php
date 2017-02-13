@@ -12,6 +12,33 @@ abstract class Helpers {
         return $array;
     }
     
+    public static function validaNomePermissao($string) {
+        $array = array('erroNomePermissao'=>'');
+        if (empty($string) || $string = "") {
+            $array['erroNomePermissao'] = "Preencha o Nome da Permissão!";
+            return $array;
+        } 
+        return false;
+    }
+    
+    public static function validaNomeGrupoPermissao($string) {
+        $array = array('erroNomeGrupo'=>'');
+        if (empty($string) || $string = "") {
+            $array['erroNomeGrupo'] = "Preencha o Nome do Grupo da Permissão!";
+            return $array;
+        } 
+        return false;
+    }
+    
+    public static function validaNomeParametrosGrupoPermissao($arrayParam) {
+        $array = array('erroParametros'=>'');
+        if (empty($arrayParam) || $arrayParam = "") {
+            $array['erroParametros'] = "Selecione ao Menos 1(um) Nome de Permissão!";
+            return $array;
+        } 
+        return false;
+    }
+    
     public static function validaEmail($email) {
         $array = array('erroEmail'=>'');
         if (empty($email) || $email = "") {

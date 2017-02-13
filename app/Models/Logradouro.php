@@ -1,19 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jorgito.paiva
- * Date: 10/02/2017
- * Time: 16:27
- */
 
 namespace App\Models;
 
 use Core\BaseModel;
+use PDO;
+use PDOException;
 
 class Logradouro extends BaseModel
 {
     protected $table = "tb_logradouro";
     private $nome_logradouro;
+    private $idLogradouro;
+    private $logradouro = array();
 
     /**
      * Logradouro constructor.
@@ -29,6 +27,9 @@ class Logradouro extends BaseModel
         return $this->table;
     }
 
+    /**
+     * @return type
+     */
     public function getLogradouros() {
         try {
             $query = "SELECT * FROM {$this->table}";
@@ -42,6 +43,37 @@ class Logradouro extends BaseModel
                 echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
             }
             exit;
+        }
+    }
+    
+    /**
+     * @param type $id
+     * @return type
+     */
+    public function setLogradouro($id) {
+        $this->idLogradouro = $id;
+        try {
+            $query = "SELECT * FROM {$this->table} WHERE id_logradouro = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $this->idLogradouro, PDO::PARAM_INT);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $this->logradouro = $stmt->fetch();
+                $stmt->closeCursor();
+            }
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            }
+            exit;
+        }
+    }
+    
+    public function getLogradouroBairro() {
+        if (isset($this->logradouro)) {
+            return $this->logradouro;
+        } else {
+            return false;
         }
     }
 

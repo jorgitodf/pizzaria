@@ -15,13 +15,7 @@
         <![endif]-->
     </head>
     <header id="header">
-        <?php
-            if (!isset($_SESSION['ccUser']) && empty($_SESSION['ccUser'])) {
-                require_once __DIR__ . "/menu.php";
-            } else {
-                require_once __DIR__ . "/menulog.php";
-            }
-        ?>
+        <?php $this->menu(); ?>
     </header>
     <body>
         <main>    
@@ -45,6 +39,16 @@
             $(function () {
                 $("#dropdown-content").mouseleave(function(){
                     $("#dropdown-content").css("display", "none");
+                });
+            })
+            $(function(){
+                $("#dropdown_menu_admin").mouseover(function(){
+                    $("#dropdown-content_admin").css("display", "block");
+                });
+            });
+            $(function () {
+                $("#dropdown-content_admin").mouseleave(function(){
+                    $("#dropdown-content_admin").css("display", "none");
                 });
             })
         </script>

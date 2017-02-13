@@ -5,11 +5,14 @@ namespace App\Controllers;
 use Core\BaseController;
 use Core\Container;
 use Core\Helpers;
+use App\Models\Uf;
+use Core\DataBase;
 
 class CadastroController extends BaseController {
 
     protected $modelCliente;
     protected $modelLogradouro;
+    protected $modelUf;
 
     /**
      * CadastroController constructor.
@@ -18,6 +21,7 @@ class CadastroController extends BaseController {
         parent::__construct();
         $this->modelCliente = Container::getModel("Cliente");
         $this->modelLogradouro = Container::getModel("Logradouro");
+        $this->modelUf = new Uf(DataBase::getConexao());
     }
 
     public function index() {
@@ -63,12 +67,14 @@ class CadastroController extends BaseController {
             }
 
         }
-        $this->renderView('cadastro/index', 'layout');        
+        $this->renderView('cadastro/index', 'layout', 'menu');        
     }
 
     public function cadastrarEndereco() {
         $this->setPageTitle('Endereço');
+        $this->view->ufs = $this->modelUf->getAllUf();
         $this->view->lograrouros = $this->modelLogradouro->getLogradouros();
-        $this->renderView('endereco/index', 'layout');
+        
+        $this->renderView('endereco/index', 'layout', 'menu');
     }
 }

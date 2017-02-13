@@ -6,6 +6,7 @@ use Core\BaseModel;
 use PDOException;
 use Core\Helpers;
 use PDO;
+use Core\Container;
 
 class Cliente extends BaseModel {
     
@@ -17,6 +18,15 @@ class Cliente extends BaseModel {
     private $email;
     private $senha;
     private $data_cadastro;
+    private $userInfo = array();
+    private $userEnderecoInfo;
+    private $enderecoLogradouroInfo;
+    private $modelPermissoes;
+    private $modelEndereco;
+    private $modelLogradouro;
+    private $modelBairro;
+    private $modelCidade;
+    private $modelUf;
 
     public function __construct($pdo, $cpf, $tipo_cliente, $nome_completo, $data_nascimento, $email, $senha, $data_cadastro) {
         parent::__construct($pdo);
@@ -27,12 +37,17 @@ class Cliente extends BaseModel {
         $this->email = $email;
         $this->senha = $senha;
         $this->data_cadastro = $data_cadastro;
+        $this->modelPermissoes = Container::getModel("Permissoes");
+        $this->modelEndereco = Container::getModel("Endereco");
+        $this->modelLogradouro = Container::getModel("Logradouro");
+        $this->modelBairro = Container::getModel("Bairro");
+        $this->modelCidade = Container::getModel("Cidade");
+        $this->modelUf = Container::getModel("Uf");
     }
     
     public function getTable() {
         return $this->table;
     }
-
 
     /**
      * @return mixed
@@ -131,7 +146,7 @@ class Cliente extends BaseModel {
 
     public function logarUsuario($email) {
         try {
-            $query = "SELECT id_cliente, cpf, nome_completo, fk_id_permissao_grupo FROM {$this->table} WHERE email = ?";
+            $query = "SELECT id_cliente, cpf, nome_completo FROM {$this->table} WHERE email = ?";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(1, $email, PDO::PARAM_STR);
             $stmt->execute();
@@ -140,7 +155,6 @@ class Cliente extends BaseModel {
                 $_SESSION['ccUser']['id_cliente'] = $row->id_cliente;
                 $_SESSION['ccUser']['cpf'] = $row->cpf;
                 $_SESSION['ccUser']['nome_completo'] = $row->nome_completo;
-                $_SESSION['ccUser']['permissao'] = $row->fk_id_permissao_grupo;
                 return true;
             } 
             return false;
@@ -243,6 +257,148 @@ class Cliente extends BaseModel {
         } else {
             return false;
         }
+    }
+    
+    public function setLoggedUser() {
+        if (isset($_SESSION['ccUser']) && !empty($_SESSION['ccUser'])) {
+            try {
+                $query = "SELECT id_cliente, cpf, tipo_cliente, nome_completo, data_nascimento, email, data_cadastro, fk_id_permissao_grupo"
+                        . " FROM {$this->table} WHERE id_cliente = ?";
+                $stmt = $this->pdo->prepare($query);
+                $stmt->bindValue(1, $_SESSION['ccUser']['id_cliente'], PDO::PARAM_INT);
+                $stmt->execute();
+                if($stmt->rowCount() > 0) {
+                    $this->userInfo = $stmt->fetch();
+                    $this->modelPermissoes->setGrupo($this->userInfo->fk_id_permissao_grupo);
+                    $this->modelEndereco->setEndereco($this->userInfo->id_cliente);
+                    $this->modelLogradouro->setLogradouro($this->getIdLogradouroInEndereco());
+                    $this->modelBairro->setBairro($this->getIdBairroInEndereco());
+                    $this->modelCidade->setCidade($this->getIdCidadeBairro());
+                    $this->modelUf->setUf($this->getIdUfCidade());
+                    $stmt->closeCursor();
+                }
+            } catch (PDOException $exc) {
+                if ($exc->getCode() == '42S02') {
+                    echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+                }
+                exit;
+            }
+        }
+    }
+    
+    public function getPermissaoGrupo() {
+        if (isset($this->userInfo->fk_id_permissao_grupo)) {
+            return $this->userInfo->fk_id_permissao_grupo;
+        } else {
+            return false;
+        }
+    }
+    
+    public function possuiPermissao($name) {
+        return $this->modelPermissoes->possuiPermissao($name);
+    }
+
+    public function getUserInfo() {
+        if (isset($this->userInfo)) {
+            return $this->userInfo;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getIdLogradouroInEndereco() {
+        if (isset($this->modelEndereco->getEnderecoUser()->fk_id_logradouro)) {
+            return $this->modelEndereco->getEnderecoUser()->fk_id_logradouro;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getIdBairroInEndereco() {
+        if (isset($this->modelEndereco->getEnderecoUser()->fk_id_bairro)) {
+            return $this->modelEndereco->getEnderecoUser()->fk_id_bairro;
+        } else {
+            return false;
+        }
+    }
+
+    public function getUserEnderecoInfo() {
+        if (isset($this->userEnderecoInfo)) {
+            return $this->userEnderecoInfo;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getEnderecoLogradouroInfo() {
+        if (isset($this->enderecoLogradouroInfo)) {
+            return $this->enderecoLogradouroInfo;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getIdUfCidade() {
+        if (isset($this->modelCidade->getCidadeBairro()->fk_id_uf)) {
+            return $this->modelCidade->getCidadeBairro()->fk_id_uf;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getIdCidadeBairro() {
+        if (isset($this->modelBairro->getBairroCidade()->fk_id_cidade)) {
+            return $this->modelBairro->getBairroCidade()->fk_id_cidade;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getIdUser() {
+        if (isset($this->userInfo->id_cliente)) {
+            return $this->userInfo->id_cliente;
+        } else {
+            return false;
+        }
+    }    
+    
+    public function getUserInfoUser() {
+        $array = array();
+        if (isset($this->userInfo)) {
+            $array['id_cliente'] = $this->userInfo->id_cliente;
+            $array['cpf'] = $this->userInfo->cpf;
+            $array['nome_completo'] = $this->userInfo->nome_completo;
+            $array['data_nascimento'] = $this->userInfo->data_nascimento;
+            $array['email'] = $this->userInfo->email;
+            $array['nome_logradouro'] = $this->modelLogradouro->getLogradouroBairro()->nome_logradouro;
+            $array['complemento'] = $this->modelEndereco->getEnderecoUser()->complemento;
+            $array['numero'] = $this->modelEndereco->getEnderecoUser()->numero;
+            $array['cep'] = $this->modelEndereco->getEnderecoUser()->cep;
+            $array['nome_bairro'] = $this->modelBairro->getBairroCidade()->nome_bairro;
+            $array['nome_cidade'] = $this->modelCidade->getCidadeBairro()->nome_cidade;
+            $array['sigla_uf'] = $this->modelUf->getUfCidade()->sigla_uf;
+            return $array;
+        }
+    }
+    
+    public function findUserInGrupo($id) {
+        try {
+            $stmt = $this->pdo->prepare("SELECT COUNT(id_cliente) AS user FROM {$this->table} WHERE fk_id_permissao_grupo = ?");
+            $stmt->bindValue(1, $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            if($row->user == 0) {
+                return false;
+                $stmt->closeCursor();
+            } else {
+                return true;
+            }
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            }
+            exit;
+        }  
     }
     
 }

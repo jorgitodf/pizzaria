@@ -45,12 +45,19 @@ class LoginController extends BaseController {
                 }
             }
         }
-        $this->renderView('login/login', 'layout');
+        $this->renderView('login/login', 'layout', 'menu');
     }
     
     public function logout() {
-        unset($_SESSION['ccUser']);
-        Redirect::route('/home');
+        $this->modelCliente->setLoggedUser();
+        if ($this->modelCliente->possuiPermissao('completo')) {
+            unset($_SESSION['ccUser']);
+            Redirect::route('/home');
+        } else {
+            $this->view->erro = "Você não possui permissão para Deslogar do Sistema";
+            $this->renderView('permissao/index', 'layout', 'menu');
+        }
+
     }
 
 }
