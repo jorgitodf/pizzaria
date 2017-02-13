@@ -46,6 +46,54 @@ abstract class Helpers {
         }
         return $array;
     }
+    
+    public static function validaUf($uf) {
+        if ($uf == 0 || $uf == 'UF') {
+            $json = array('status' => 'error', 'message' => 'Informe uma Uf!');
+            return $json;
+        }
+        return false;
+    }
+    
+    public static function validaCidade($cidade) {
+        if ($cidade == 0 || $cidade == 'Cidade') {
+            $json = array('status' => 'error', 'message' => 'Informe uma Cidade!');
+            return $json;
+        }
+        return false;
+    }
+    
+    public static function validaLogradouroCad($logradouro) {
+        if ($logradouro == 0 || $logradouro == 'Logradouro') {
+            $json = array('status' => 'error', 'message' => 'Informe um Logradouro!');
+            return $json;
+        }
+        return false;
+    }
+    
+    public static function validaComplemento($complemento) {
+        if (empty($complemento)) {
+            $json = array('status' => 'error', 'message' => 'Informe o Complemento do Endereço!');
+            return $json;
+        }
+        return false;
+    }
+    
+    public static function validaNumero($numero) {
+        if (empty($numero)) {
+            $json = array('status' => 'error', 'message' => 'Informe o Número do Complemento do Endereço!');
+            return $json;
+        }
+        return false;
+    }
+    
+    public static function validaCep($numero) {
+        if (empty($numero)) {
+            $json = array('status' => 'error', 'message' => 'Informe o CEP do Endereço!');
+            return $json;
+        }
+        return false;
+    }
 
     public static function validaNomeCadastro($nome) {
         $array = array();
@@ -125,6 +173,21 @@ abstract class Helpers {
         } else {
             return false;
         }
+    }
+
+    public static function validaBairro($bairro) {
+        if (empty($bairro)) {
+            $json = array('status' => 'error', 'message' => 'Informe um Bairro!');
+            return $json;
+        } elseif (!preg_match("/^[A-Z,a-z,À-ú, ]+?$/i", $bairro)) {
+            $json = array('status' => 'error', 'message' => 'O Campo Bairro só Aceita Letras!');
+            return $json;
+        }
+        return false;
+    }
+    
+    public static function formataCep($cep) {
+	return $cep_formatado = str_replace("-","", $cep);
     }
 
 }

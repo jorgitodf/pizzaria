@@ -6,12 +6,15 @@ use Core\BaseController;
 use Core\Container;
 use Core\Helpers;
 use App\Models\Uf;
+use App\Models\Logradouro;
+use App\Models\Endereco;
 use Core\DataBase;
 
 class CadastroController extends BaseController {
 
     protected $modelCliente;
     protected $modelLogradouro;
+    protected $modelEndereco;
     protected $modelUf;
 
     /**
@@ -20,7 +23,8 @@ class CadastroController extends BaseController {
     public function __construct() {
         parent::__construct();
         $this->modelCliente = Container::getModel("Cliente");
-        $this->modelLogradouro = Container::getModel("Logradouro");
+        $this->modelLogradouro = new Logradouro(DataBase::getConexao());
+        $this->modelEndereco = new Endereco(DataBase::getConexao());
         $this->modelUf = new Uf(DataBase::getConexao());
     }
 
@@ -71,10 +75,39 @@ class CadastroController extends BaseController {
     }
 
     public function cadastrarEndereco() {
-        $this->setPageTitle('Endereço');
-        $this->view->ufs = $this->modelUf->getAllUf();
-        $this->view->lograrouros = $this->modelLogradouro->getLogradouros();
-        
-        $this->renderView('endereco/index', 'layout', 'menu');
+        if($_POST) {
+            $idCidade = filter_input(INPUT_POST, 'nome_cidade');
+            $idUf = filter_input(INPUT_POST, 'sigla_uf');
+            $logradouro = filter_input(INPUT_POST, 'logradouro');
+            $complemento = filter_input(INPUT_POST, 'complemento');
+            $numero = filter_input(INPUT_POST, 'numero');
+            $cep = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_STRING);
+            $bairro = filter_input(INPUT_POST, 'bairro', FILTER_SANITIZE_STRING);
+            $tipoEndereco = filter_input(INPUT_POST, 'tipoEndereco');
+            if ($this->modelEndereco->setUf($idUf)) {
+                $json = $this->modelEndereco->setUf($idUf);
+            } elseif($this->modelEndereco->setCidade($idCidade)) {
+                $json = $this->modelEndereco->setCidade($idCidade);
+            } elseif($this->modelEndereco->setLogradouroCad($logradouro)) {
+                $json = $this->modelEndereco->setLogradouroCad($logradouro);
+            } elseif($this->modelEndereco->setComplemento($complemento)) {
+                $json = $this->modelEndereco->setComplemento($complemento);
+            } elseif($this->modelEndereco->setNumero($numero)) {
+                $json = $this->modelEndereco->setNumero($numero);
+            } elseif($this->modelEndereco->setCep($cep)) {
+                $json = $this->modelEndereco->setCep($cep);
+            } elseif($this->modelEndereco->setBairro($bairro)) {
+                $json = $this->modelEndereco->setBairro($bairro);
+            }
+            
+            
+            echo json_encode($json);
+        } else {
+            $this->setPageTitle('Endereço');
+            $this->view->ufs = $this->modelUf->getAllUf();
+            $this->view->lograrouros = $this->modelLogradouro->getLogradouros();
+            $this->renderView('endereco/index', 'layout', 'menu');
+        }
     }
+    
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Core\BaseModel;
 use PDO;
 use PDOException;
+use Core\Helpers;
 
 class Endereco extends BaseModel
 {
@@ -13,20 +14,32 @@ class Endereco extends BaseModel
     private $numero;
     private $cep;
     private $idUser;
+    private $uf;
+    private $cidade;
+    private $bairro;
+    private $logradouroCad;
     private $endereco = array();
 
     /**
-     * Endereco constructor.
-     * @param $complemento
-     * @param $numero
-     * @param $cep
+     * @param type $pdo
+     * @param type $complemento
+     * @param type $numero
+     * @param type $cep
+     * @param type $uf
+     * @param type $cidade
+     * @param type $logradouroCad
+     * @param type $bairro
      */
-    public function __construct($pdo, $complemento, $numero, $cep)
+    public function __construct($pdo, $complemento, $numero, $cep, $uf, $cidade, $logradouroCad, $bairro)
     {
         parent::__construct($pdo);
         $this->complemento = $complemento;
         $this->numero = $numero;
         $this->cep = $cep;
+        $this->uf = $uf;
+        $this->cidade = $cidade;
+        $this->logradouroCad = $logradouroCad;
+        $this->bairro = $bairro;
     }
     
     /**
@@ -36,6 +49,55 @@ class Endereco extends BaseModel
         return $this->table;
     }
     
+    public function getComplemento() {
+        return $this->complemento;
+    }
+
+    public function getNumero() {
+        return $this->numero;
+    }
+
+    public function getCep() {
+        return $this->cep;
+    }
+
+    /**
+     * @param type $complemento
+     * @return type
+     */
+    public function setComplemento($complemento) {
+        if (Helpers::validaComplemento($complemento) == true) {
+            return Helpers::validaComplemento($complemento);
+        } else {
+            $this->complemento = $complemento;
+        }
+    }
+
+    /**
+     * @param type $numero
+     * @return type
+     */
+    public function setNumero($numero) {
+        if (Helpers::validaNumero($numero) == true) {
+            return Helpers::validaNumero($numero);
+        } else {
+            $this->numero = $numero;
+        }
+    }
+
+    /**
+     * @param type $cep
+     * @return type
+     */
+    public function setCep($cep) {
+        if (Helpers::validaCep($cep) == true) {
+            return Helpers::validaCep($cep);
+        } else {
+            $this->cep = $cep;
+        }
+    }
+
+        
     /**
      * @param $id
      * @return array
@@ -66,6 +128,68 @@ class Endereco extends BaseModel
             return false;
         }
     }
+
     
+    
+    public function getUf() {
+        return $this->uf;
+    }
+
+    /**
+     * @param type $uf
+     * @return type
+     */
+    public function setUf($uf) {
+        if (Helpers::validaUf($uf) == true) {
+            return Helpers::validaUf($uf);
+        } else {
+            $this->uf = $uf;
+        }
+    }
+
+    public function getCidade() {
+        return $this->cidade;
+    }
+
+    /**
+     * @param type $cidade
+     * @return type
+     */
+    public function setCidade($cidade) {
+        if (Helpers::validaCidade($cidade) == true) {
+            return Helpers::validaCidade($cidade);
+        } else {
+            $this->cidade = $cidade;
+        }
+    }
+
+    public function getLogradouroCad() {
+        return $this->logradouroCad;
+    }
+
+    /**
+     * @param type $logradouroCad
+     * @return type
+     */
+    public function setLogradouroCad($logradouroCad) {
+        if (Helpers::validaLogradouroCad($logradouroCad) == true) {
+            return Helpers::validaLogradouroCad($logradouroCad);
+        } else {
+            $this->logradouroCad = $logradouroCad;;
+        }
+    }
+    
+    public function getBairro() {
+        return $this->bairro;
+    }
+
+    public function setBairro($bairro) {
+        if (Helpers::validaBairro($bairro) == true) {
+            return Helpers::validaBairro($bairro);
+        } else {
+            $this->bairro = $bairro;;
+        }
+    }
+
 
 }

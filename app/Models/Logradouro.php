@@ -6,6 +6,7 @@ use Core\BaseModel;
 use PDO;
 use PDOException;
 
+
 class Logradouro extends BaseModel
 {
     protected $table = "tb_logradouro";
@@ -76,5 +77,4 @@ class Logradouro extends BaseModel
             return false;
         }
     }
-
 }

@@ -206,8 +206,34 @@
     }
     #btn_cad_end {
         width: 88%;
+    }  
+    #div_cad_end {
+        margin-left: 28%;
+        margin-top: 4%;
+        background-color: #F5F5F5;
+        height: 390px;
     }
-
+    #div_radio {
+        padding: 5px;
+        margin-left: 13%;
+    }
+    .msgError {
+        color: red;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 7px;
+    }
+    #div_msgs_error_credito {
+        float: left;
+        margin-left: 7%;
+    }
+    #div_botoes_cad_end {
+        margin-left: auto;
+    }
+    #div_ret_cad_end {
+        width: 320px;
+        text-align: center;
+    }
 }
 
 @media (min-width: 1440px) {
@@ -563,8 +589,21 @@
         padding: 5px;
         margin-left: 13%;
     }
-    #div_btn_cad_end {
-        padding-top: 4%;
+    .msgError {
+        color: red;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 7px;
     }
-    
+    #div_msgs_error_credito {
+        float: left;
+        margin-left: 7%;
+    }
+    #div_botoes_cad_end {
+        margin-left: auto;
+    }
+    #div_ret_cad_end {
+        width: 320px;
+        text-align: center;
+    }
 }

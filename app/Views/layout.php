@@ -26,10 +26,12 @@
         <script src="/assets/js/bootstrap.min.js"></script>
         <script src="/assets/js/jquery.maskMoney.js"></script>
         <script src="/assets/js/jquery.maskedinput.js"></script>
+        <script src="/assets/js/scripts.js"></script>
         <script type="text/javascript">
             jQuery(function($){
                 $("#cpf").mask("999.999.999-99");
                 $("#tel_celular").mask("(99) 99999-9999");
+                $("#cep").mask("99999-999");
             });
             $(function(){
                 $("#dropdown_menu").mouseover(function(){

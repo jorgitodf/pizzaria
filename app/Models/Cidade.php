@@ -57,4 +57,25 @@ class Cidade extends BaseModel
             return false;
         }
     }
+    
+    public function getCidadesByIdUf($idUf) {
+        try {
+            $query = "SELECT id_cidade, nome_cidade FROM {$this->table} WHERE fk_id_uf = ? ORDER BY nome_cidade ASC";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $idUf, PDO::PARAM_INT);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $result = $stmt->fetchAll();
+                $stmt->closeCursor();
+                return $result;
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            }
+            exit;
+        }
+    }
 }

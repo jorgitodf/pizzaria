@@ -6,6 +6,7 @@ $route[] = ['/login/logout', 'LoginController@logout'];
 $route[] = ['/login/senha', 'LoginController@recuperarSenha'];
 $route[] = ['/cadastrar', 'CadastroController@index'];
 $route[] = ['/cadastrar/endereco', 'CadastroController@cadastrarEndereco'];
+$route[] = ['/uf/buscar', 'AjaxController@buscarUf'];
 $route[] = ['/permissoes', 'PermissaoController@index'];
 $route[] = ['/permissoes/excluir/{id}', 'PermissaoController@excluir'];
 $route[] = ['/permissoes/remover/{id}', 'PermissaoController@remover'];
