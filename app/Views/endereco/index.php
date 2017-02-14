@@ -44,8 +44,13 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <input class="form-control" name="bairro" type="text" placeholder="Informe o Bairro" value="">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-8">
+                            <select class="form-control" name="bairro" id="cmbBairro">
+                                <option>Bairro</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="div_btn_add_bairro">
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add_bairro" id="btn_adc_bairro" title="Clique aqui para Adicinar o Bairro caso não exista na lista ao lado."><span class="glyphicon glyphicon-plus" id="gly_btn_adc_bai"></span></button>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" id="div_radio">
                             <label class="radio-inline">
@@ -79,3 +84,40 @@
         </form>    
     </aside>
 </section>
+
+<div class="modal fade" id="add_bairro" tabindex="-1" role="dialog" aria-labelledby="add_bairro">
+    <div class="modal-dialog" role="document">
+        <form class="form-login" action="/cadastrar/bairro" method="post" id="form_cad_bairro">
+            <div class="modal-content" id="div_modal_content">
+                <div class="modal-header modal_header">
+                    <h4 class="modal-title" id="exampleModalLabel">Adicionar Bairro</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group div_form_modal">
+                        <select class="form-control" name="sigla_uf" id="cmbUf">
+                            <option value="">UF</option>
+                            <?php foreach ($this->view->ufs as $value): ?>
+                                <option value="<?php echo $value->id_uf; ?>"><?php echo $value->sigla_uf; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group div_form_modal">
+                        <select class="form-control" name="nome_cidade" id="cmbCidadeBairro">
+                            <option>Cidade</option>
+                        </select>
+                    </div>
+                    <div class="form-group div_form_modal">
+                        <input class="form-control" name="nome_bairro" type="text" placeholder="Digite o Nome do Bairro" value="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="btn_bairro_cad">Salvar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+                <div class="form-group" id="div_retorno_erro_modal">
+                    <div id="retorno"></div>
+                </div>
+            </div>
+        </form>    
+    </div>
+</div>

@@ -18,6 +18,7 @@ class Endereco extends BaseModel
     private $cidade;
     private $bairro;
     private $logradouroCad;
+    private $tipoEndereco;
     private $endereco = array();
 
     /**
@@ -30,7 +31,7 @@ class Endereco extends BaseModel
      * @param type $logradouroCad
      * @param type $bairro
      */
-    public function __construct($pdo, $complemento, $numero, $cep, $uf, $cidade, $logradouroCad, $bairro)
+    public function __construct($pdo, $complemento, $numero, $cep, $uf, $cidade, $logradouroCad, $bairro, $tipoEndereco)
     {
         parent::__construct($pdo);
         $this->complemento = $complemento;
@@ -40,6 +41,7 @@ class Endereco extends BaseModel
         $this->cidade = $cidade;
         $this->logradouroCad = $logradouroCad;
         $this->bairro = $bairro;
+        $this->tipoEndereco = $tipoEndereco;
     }
     
     /**
@@ -183,11 +185,31 @@ class Endereco extends BaseModel
         return $this->bairro;
     }
 
+    /**
+     * @param type $bairro
+     * @return type
+     */
     public function setBairro($bairro) {
         if (Helpers::validaBairro($bairro) == true) {
             return Helpers::validaBairro($bairro);
         } else {
             $this->bairro = $bairro;;
+        }
+    }
+    
+    public function getTipoEndereco() {
+        return $this->bairro;
+    }
+
+    /**
+     * @param type $tipoEndereco
+     * @return type
+     */
+    public function setTipoEndereco($tipoEndereco) {
+        if (Helpers::validaTipoEndereco($tipoEndereco) == true) {
+            return Helpers::validaTipoEndereco($tipoEndereco);
+        } else {
+            $this->bairro = $tipoEndereco;;
         }
     }
 

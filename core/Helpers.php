@@ -179,8 +179,19 @@ abstract class Helpers {
         if (empty($bairro)) {
             $json = array('status' => 'error', 'message' => 'Informe um Bairro!');
             return $json;
-        } elseif (!preg_match("/^[A-Z,a-z,À-ú, ]+?$/i", $bairro)) {
+        } /* elseif (!preg_match("/^[A-Z,a-z,À-ú, ]+?$/i", $bairro)) {
             $json = array('status' => 'error', 'message' => 'O Campo Bairro só Aceita Letras!');
+            return $json;
+        } */
+        return false;
+    }
+    
+    public static function validaTipoEndereco($param) {
+        if (empty($param)) {
+            $json = array('status' => 'error', 'message' => 'Selecione o Tipo de Endereço!');
+            return $json;
+        } elseif (!is_numeric($param)) {
+            $json = array('status' => 'error', 'message' => 'Tipo de Endereço Inválido!');
             return $json;
         }
         return false;
