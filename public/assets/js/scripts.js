@@ -106,8 +106,7 @@ $(document).ready(function () {
                     if (retorno.status === 'error' ){
                         $('.retorno').html('<div class="alert alert-danger msgError" id="div_ret_cad_end">' + retorno.message + '</div>');
                     } else if (retorno.status === 'success'){
-                        //$('.retorno').html('<span class="alert alert-success" id="msgUserCadSucesso">' + retorno.message + '</span>');
-                        alert(retorno.message);
+                        $('.retorno').html('<div class="alert alert-success msgSuccess" id="msgEndCadSucesso">' + retorno.message + '</div>');
                     }
                     else {
                         alert(retorno);
@@ -120,8 +119,8 @@ $(document).ready(function () {
         });
     });
    
-    //CADASTRO DE BAIRRO
-     $(function () {
+    //CADASTRO DE BAIRRO MODAL
+    $(function () {
         $("#form_cad_bairro").submit(function(e) {
             $(".msgError").html("");
             $(".msgError").css("display", "none");
@@ -133,10 +132,9 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (retorno) {
                     if (retorno.status === 'error' ){
-                        $('#retorno').html('<div class="alert alert-danger msgError" id="">' + retorno.message + '</div>');
+                        $('#retorno').html('<div class="alert alert-danger msgError" id="msgErroCadBairo">' + retorno.message + '</div>');
                     } else if (retorno.status === 'success'){
-                        //$('.retorno').html('<span class="alert alert-success" id="msgUserCadSucesso">' + retorno.message + '</span>');
-                        alert(retorno.message);
+                        $('#retorno').html('<div class="alert alert-success msgSuccess" id="">' + retorno.message + '</div>');
                     }
                     else {
                         alert(retorno);
@@ -146,6 +144,42 @@ $(document).ready(function () {
                     alert('ERRO: Falha ao carregar o script.');
                 }
             });
+        });
+    });
+    
+    //BOTÃO FECHAR NO MODAL DE CADASTRO DE BAIRRO 
+    $('#btn_fechar_modal_cad_bairro').click(function () {
+        $("#cmbUf").val("");
+        $("#cmbCidadeBairro").val("");
+        $("#nome_bairro_modal").val("");
+        $(".msgError").html("");
+        $(".msgError").css("display", "none");
+        $(".msgSuccess").html("");
+        $(".msgSuccess").css("display", "none");
+        var idcidade = $("#cmbCidade").val();
+        $.ajax({
+            type: "POST",
+            url: "/cidade/buscar",
+            data: {nome_cidade: idcidade},
+            dataType: 'json',
+            success: function (retorno) {
+                if (retorno.status === 'error' ) {
+                    Reset();
+                    alert(retorno.message);
+                } else if (retorno.status === 'success') {
+                    var option = '<option>Bairro</option>';
+                    $.each(retorno.message, function(i, obj) {
+                        option += '<option value="' + obj.id_bairro + '">' + obj.nome_bairro + '</option>';
+                    });
+                    $('#cmbBairro').html(option).show(); 
+                }
+                else {
+                    alert(retorno);
+                }
+            },
+            fail: function(){
+                alert('ERRO: Falha ao carregar o script.');
+            }
         });
     });
  

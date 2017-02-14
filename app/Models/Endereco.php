@@ -30,6 +30,7 @@ class Endereco extends BaseModel
      * @param type $cidade
      * @param type $logradouroCad
      * @param type $bairro
+     * @param type $tipoEndereco
      */
     public function __construct($pdo, $complemento, $numero, $cep, $uf, $cidade, $logradouroCad, $bairro, $tipoEndereco)
     {
@@ -149,6 +150,9 @@ class Endereco extends BaseModel
         }
     }
 
+    /**
+     * @return type
+     */
     public function getCidade() {
         return $this->cidade;
     }
@@ -181,10 +185,12 @@ class Endereco extends BaseModel
         }
     }
     
+    /**
+     * @return type
+     */
     public function getBairro() {
         return $this->bairro;
     }
-
     /**
      * @param type $bairro
      * @return type
@@ -193,12 +199,12 @@ class Endereco extends BaseModel
         if (Helpers::validaBairro($bairro) == true) {
             return Helpers::validaBairro($bairro);
         } else {
-            $this->bairro = $bairro;;
+            $this->bairro = $bairro;
         }
     }
     
     public function getTipoEndereco() {
-        return $this->bairro;
+        return $this->tipoEndereco;
     }
 
     /**
@@ -209,9 +215,39 @@ class Endereco extends BaseModel
         if (Helpers::validaTipoEndereco($tipoEndereco) == true) {
             return Helpers::validaTipoEndereco($tipoEndereco);
         } else {
-            $this->bairro = $tipoEndereco;;
+            $this->tipoEndereco = $tipoEndereco;;
         }
     }
 
-
+    public function cadastrarEndereco($idCliente) {
+        $tipo_endereco = "";
+        if ($this->tipoEndereco == 1) {
+            $tipo_endereco = 'Casa';
+        } else {
+            $tipo_endereco = 'Trabalho';
+        }
+        try {
+            $this->pdo->beginTransaction();
+            $query = "INSERT INTO {$this->table} (complemento, numero, cep, fk_id_bairro, fk_id_logradouro, fk_id_cliente, tipo_endereco) "
+                . "VALUES (?,?,?,?,?,?,?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $this->complemento, PDO::PARAM_STR);
+            $stmt->bindValue(2, $this->numero, PDO::PARAM_INT);
+            $stmt->bindValue(3, Helpers::formataCep($this->cep), PDO::PARAM_INT);
+            $stmt->bindValue(4, $this->bairro, PDO::PARAM_INT);
+            $stmt->bindValue(5, $this->logradouroCad, PDO::PARAM_INT);
+            $stmt->bindValue(6, $idCliente, PDO::PARAM_INT);
+            $stmt->bindValue(7, $tipo_endereco, PDO::PARAM_STR);
+            $stmt->execute();
+            $this->pdo->commit();
+            return 1;
+        } catch (PDOException $exc) {
+            $this->pdo->rollback();
+            if ($exc->getCode() == '42S02') {
+                return "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            } else {
+                return $exc->getMessage();
+            }
+        }
+    }
 }

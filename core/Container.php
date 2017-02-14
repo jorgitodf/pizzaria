@@ -32,6 +32,14 @@ class Container {
         }
     }
     
+    public static function getImagem() {
+        if (file_exists(__DIR__ . "/../storage/imagens/pizza_quem_somos.jpg")) {
+            return require_once __DIR__ . "/../storage/imagens/pizza_quem_somos.jpg";
+        } else {
+            echo "<h1>Erro 404: O Arquivo da Page Not Found</h1>";
+        }
+    }
+    
     public static function verificaErroDataBaseConnection($code, $db) {
         if ($code == 1049) {
             $msgErro = "<h3>O Banco de Dados <b>{$db}</b> não Existe... </h3><br/>";

@@ -51,7 +51,7 @@ class AjaxController extends BaseController{
             } elseif ($this->modelBairro->getBairrosByIdCidade($idCidade) != false) {
                 $json = array('status' => 'success', 'message' => $this->modelBairro->getBairrosByIdCidade($idCidade));
             } else {
-                $json = array('status' => 'error', 'message' => 'Adicione o Bairro clicando no + acima!');
+                //$json = array('status' => 'error', 'message' => 'Adicione o Bairro clicando no + acima!');
             }
             echo json_encode($json);
         }

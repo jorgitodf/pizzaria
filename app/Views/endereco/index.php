@@ -76,7 +76,8 @@
                 </div>
                 <div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_msgs_error_credito">
                     <div class="form-group">
-                        <div class="retorno" id=""></div>
+                        <div class="retorno">
+                        </div>
                     </div>
                 </div>    
             </div>
@@ -107,15 +108,18 @@
                         </select>
                     </div>
                     <div class="form-group div_form_modal">
-                        <input class="form-control" name="nome_bairro" type="text" placeholder="Digite o Nome do Bairro" value="">
+                        <input class="form-control" name="nome_bairro" id="nome_bairro_modal" type="text" placeholder="Digite o Nome do Bairro" value="">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="btn_bairro_cad">Salvar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
-                <div class="form-group" id="div_retorno_erro_modal">
-                    <div id="retorno"></div>
+                    <div class="form-group left" id="div_retorno_erro_modal">
+                        <div id="retorno">
+                        </div>
+                    </div>
+                    <div class="form-group" id="div_btns_cad_bairro">
+                        <button type="submit" class="btn btn-primary" id="btn_bairro_cad">Salvar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_fechar_modal_cad_bairro">Fechar</button>
+                    </div>    
                 </div>
             </div>
         </form>    

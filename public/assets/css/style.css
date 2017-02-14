@@ -234,7 +234,115 @@
         width: 320px;
         text-align: center;
     }
-}
+    
+    /*MODAL ADD BAIRRO*/
+    #div_modal_content {
+        width: 95%;
+        margin-top: 22%;
+        height: 310px;
+    }
+    .modal_header {
+        background-color: #DCDCDC;
+    }
+    .modal_header > h4 {
+        text-align: center;
+        font-weight: bold;
+    }
+    #retorno {
+        text-align: center;
+        font-weight: bold;
+        width: 60%;
+    }
+    #div_retorno_erro_modal {
+        margin-left: 2%;
+    }
+    .div_form_modal {
+        width: 50%;
+        margin-left: 25%;
+    }
+    .msgSuccess {
+        color: green;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 7px;
+        width: 200%;
+    }
+    #msgEndCadSucesso {
+        width: 80%;
+        text-align: center;
+        margin-left: 8%;
+    }
+    #div_btns_cad_bairro {
+        float: right;
+    }
+    #msgErroCadBairo {
+        width: 200%;
+    }
+    .left {
+        float: left
+    }
+    
+    /*PÁGINA QUEM SOMOS*/
+    #div_quem_somos_body {
+        margin-left: 15.5%;
+        margin-top: 4%;
+        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        border: #f0b7a1	0 solid;
+        background: #f0b7a1; /* Old browsers */
+        background: -moz-linear-gradient(-45deg, #f0b7a1 0%, #752201 99%, #8c3310 100%, #bf6e4e 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(-45deg, #f0b7a1 0%,#752201 99%,#8c3310 100%,#bf6e4e 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(135deg, #f0b7a1 0%,#752201 99%,#8c3310 100%,#bf6e4e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0b7a1', endColorstr='#bf6e4e',GradientType=1 );
+    }
+    #head_quem_somos {
+        padding-top: 5px;
+        border-bottom: white 2px solid;
+        width: 95%;
+        margin-left: 2%;
+    }
+    #head_quem_somos > h3 {
+        color: white;
+        font-weight: bold;
+    }
+    #body_quem_somos {
+        width: 95%;
+        margin-left: 2%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    #body_quem_somos > p {
+        text-align: justify;
+        color: white;
+    }
+    
+    .pizza_imagem_fundo {
+        background-image: url('/storage/imagens/pizza_quem_somos.jpg');
+    }
+    
+    /*PÁGINA TERMOS E CONDIÇÕES DE USO*/
+    #div_quem_termos_body {
+        margin-left: 8%;
+        margin-top: 1%;
+    }
+    #head_termos > h3 {
+        text-align: center;
+        color: red;
+    }
+    #head_termos > h3 > p {
+        text-align: justify;
+        font-size: 11px;
+    }
+    #body_termos > p {
+        text-align: justify;
+    }
+    .cor_vermelha_negrito {
+        color: red;
+        font-weight: bold;
+    }
+    
+}    
 
 @media (min-width: 1440px) {
     .both {
@@ -646,7 +754,11 @@
         width: 50%;
         margin-left: 25%;
     }
-    
-    
+    .msgSuccess {
+        color: green;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 7px;
+    }
     
 }

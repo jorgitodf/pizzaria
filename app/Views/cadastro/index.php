@@ -1,5 +1,5 @@
 
-<section class="container container col-xs-12 col-lg-12 col-md-12 col-sm-12" id="section_cadastro_cliente">
+<section class="container col-xs-12 col-lg-12 col-md-12 col-sm-12" id="section_cadastro_cliente">
     <aside class="row">
         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" id="div_cadastro">
             <div class="panel panel-default" id="panel_cadastro_cliente_body">

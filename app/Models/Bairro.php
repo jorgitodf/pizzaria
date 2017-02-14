@@ -93,5 +93,51 @@ class Bairro extends BaseModel
         }
     }
 
+    public function consultarBairro($nome_bairro, $idCidade) {
+        $this->bairro = $nome_bairro;
+        try {
+            $query = "SELECT nome_bairro FROM {$this->table} WHERE fk_id_cidade = ? AND nome_bairro = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $idCidade, PDO::PARAM_INT);
+            $stmt->bindValue(2, $this->bairro, PDO::PARAM_STR);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $stmt->closeCursor();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            }
+            exit;
+        }
+    }
+    
+    public function cadastrarNovoBairro($nome_bairro, $idCidade) {
+        $this->bairro = $nome_bairro;
+        if (!$this->consultarBairro($nome_bairro, $idCidade)) {
+            try {
+                $this->pdo->beginTransaction();
+                $query = "INSERT INTO {$this->table} (nome_bairro, fk_id_cidade) VALUES (?, ?)";
+                $stmt = $this->pdo->prepare($query);
+                $stmt->bindValue(1, $this->bairro, PDO::PARAM_STR);
+                $stmt->bindValue(2, $idCidade, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->pdo->commit();
+                return true;
+            } catch (PDOException $exc) {
+                $this->pdo->rollback();
+                if ($exc->getCode() == '42S02') {
+                    return "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+                } else {
+                    return $exc->getMessage();
+                }
+            }
+        } else {
+            return false;
+        }
+    }
 
 }

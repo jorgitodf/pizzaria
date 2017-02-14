@@ -57,7 +57,15 @@ class LoginController extends BaseController {
             $this->view->erro = "Você não possui permissão para Deslogar do Sistema";
             $this->renderView('permissao/index', 'layout', 'menu');
         }
-
     }
 
+    public function ver() {
+        $this->setPageTitle('Quem Somos');
+        $this->renderView('site/quem_somos', 'layout', 'menu');
+    }
+
+    public function verTermo() {
+        $this->setPageTitle('Termos e Condições');
+        $this->renderView('site/termos', 'layout', 'menu');
+    }
 }

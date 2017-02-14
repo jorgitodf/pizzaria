@@ -18,8 +18,8 @@
                 <li class="dropdown" id="dropdown_menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sobre a Pizzaria</a>
                     <ul class="dropdown-menu" id="dropdown-content">
-                        <li><a href="#">Quem Somos</a></li>
-                        <li><a href="#">Termos e Condições de Uso</a></li>
+                        <li><a href="/login/quem-somos">Quem Somos</a></li>
+                        <li><a href="/login/termos">Termos e Condições de Uso</a></li>
                         <li><a href="#">Privacidade</a></li>
                     </ul>
                 </li>

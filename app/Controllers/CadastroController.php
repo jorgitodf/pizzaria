@@ -9,6 +9,7 @@ use App\Models\Uf;
 use App\Models\Logradouro;
 use App\Models\Endereco;
 use App\Models\Bairro;
+use App\Models\Cliente;
 use Core\DataBase;
 
 class CadastroController extends BaseController {
@@ -24,7 +25,7 @@ class CadastroController extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->modelCliente = Container::getModel("Cliente");
+        $this->modelCliente = new Cliente(DataBase::getConexao());
         $this->modelLogradouro = new Logradouro(DataBase::getConexao());
         $this->modelEndereco = new Endereco(DataBase::getConexao());
         $this->modelBairro = new Bairro(DataBase::getConexao());
@@ -69,7 +70,7 @@ class CadastroController extends BaseController {
                 if ($this->modelCliente->addCliente() == 1) {
                     $this->view->sucesso = "Dados Cadastrados com Sucesso!";
                 } else {
-                    $this->view->erroCad =  $this->modelCliente->addCliente();
+                    $this->view->erroCad = $this->modelCliente->addCliente();
                 }
             }
 
@@ -104,7 +105,13 @@ class CadastroController extends BaseController {
             } elseif($this->modelEndereco->setTipoEndereco($tipoEndereco)) {
                 $json = $this->modelEndereco->setTipoEndereco($tipoEndereco);
             } else {
-                $json = array('status' => 'success', 'message' => 'Cadastrar Endereço...');
+                $this->modelCliente->setLoggedUser();
+                $idCliente = $this->modelCliente->getUserInfo()->id_cliente;
+                if ($this->modelEndereco->cadastrarEndereco($idCliente) === 1) {
+                    $json = array('status' => 'success', 'message' => 'Endereço Cadastrado com Sucesso!');
+                } else {
+                    $json = array('status' => 'error', 'message' => 'Já existe um Bairro com este nome!');
+                }
             }
             echo json_encode($json);
         } else {
@@ -128,7 +135,11 @@ class CadastroController extends BaseController {
             } elseif ($this->modelBairro->setNome_bairro($nome_bairro)) {
                 $json = $this->modelBairro->setNome_bairro($nome_bairro);
             } else {
-                $json = array('status' => 'success', 'message' => 'Cadastrar Bairro...');
+                if ($this->modelBairro->cadastrarNovoBairro($this->modelBairro->getNome_bairro(), $this->modelEndereco->getCidade())) {
+                    $json = array('status' => 'success', 'message' => 'Bairro Cadastrado com Sucesso!');
+                } else {
+                    $json = array('status' => 'error', 'message' => 'Já existe um Bairro com este nome!');
+                }
             }
             echo json_encode($json);
         }
