@@ -16,6 +16,7 @@ $route[] = ['/permissoes/excluir/{id}', 'PermissaoController@excluir'];
 $route[] = ['/permissoes/remover/{id}', 'PermissaoController@remover'];
 $route[] = ['/permissoes/add', 'PermissaoController@add'];
 $route[] = ['/permissoes/adicionar', 'PermissaoController@adicionar'];
+$route[] = ['/permissoes/editar/{id}', 'PermissaoController@editar_grupo'];
 $route[] = ['/posts', 'PostsController@index'];
 $route[] = ['/posts/show/{id}', 'PostsController@show'];
 

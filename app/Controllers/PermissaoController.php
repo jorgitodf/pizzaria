@@ -128,5 +128,40 @@ class PermissaoController extends \Core\BaseController {
             Redirect::route('/home');
         }
     }
+    
+    public function editar_grupo($id) {
+        $this->setPageTitle('Editar Grupo');
+        $this->modelCliente->setLoggedUser();
+        if ($this->modelCliente->possuiPermissao('completo') == true) {
+            $this->view->permissoes = $this->modelPermissoes->getListaPermissoes();
+            $this->view->permissao = $this->modelCliente->possuiPermissao('completo');
+            if (isset($_POST['nome_grupo'])) {
+                $nome_grupo = trim(addslashes(filter_input(INPUT_POST, 'nome_grupo', FILTER_SANITIZE_STRING)));
+                $permissoes = $_POST['permissoes'];
+                if ($this->modelPermissoes->setNome_grupo($nome_grupo)['erroNomeGrupo'] == true) {
+                    $this->view->erroNomeGrupo = $this->modelPermissoes->setNome_grupo($nome_grupo);
+                } else {
+                    $this->view->nome_grupo = $nome_grupo;
+                }
+                if ($this->modelPermissoes->setParametros_permissao($permissoes)['erroParametros'] == true) {
+                    $this->view->erroNomeParamPermi = $this->modelPermissoes->setParametros_permissao($permissoes);
+                } else {
+                    //$this->view->nome_grupo = $nome_grupo;
+                }
+                if ($this->modelPermissoes->setNome_grupo($nome_grupo) == false && $this->modelPermissoes->setParametros_permissao($permissoes) == false && 
+                        $this->modelPermissoes->editarGrupo($id)) {
+                    $this->view->grupos = $this->modelPermissoes->getListaGrupos();
+                    $this->renderView('permissao/cadastro', 'layout', 'menu');
+                } else {
+
+                }
+            }
+            $this->view->grupo = $this->modelPermissoes->getGrupo($id);
+            $this->view->parametros = $this->modelPermissoes->getListaPermissoes();
+            $this->renderView('permissao/editargrupo', 'layout', 'menu');
+        } else {
+            Redirect::route('/home');
+        }
+    }
 
 }

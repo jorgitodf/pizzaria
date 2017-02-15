@@ -1,5 +1,5 @@
 
-<section class="container col-xs-12 col-lg-12 col-md-12 col-sm-12" id="">
+<section class="container col-xs-12 col-lg-12 col-md-12 col-sm-12 pizza_imagem_fundo" id="section_quem_somos">
     <aside class="row-fluid">
         <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8" id="div_quem_somos_body">
             <div class="" id="head_quem_somos">

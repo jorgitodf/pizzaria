@@ -78,12 +78,31 @@ class Permissoes extends BaseModel {
         }
     }
 
-    
+    public function getGrupo($id) {
+        try {
+            $query = "SELECT * FROM {$this->tablePg} WHERE id_permissao_grupo = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $id, PDO::PARAM_INT);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $row = $stmt->fetch();
+                $row->parametros = explode(',', $row->parametros);
+                $stmt->closeCursor();
+            }
+            return $row;
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->tablePg}</b> Ainda Não Existe..";
+            }
+            exit;
+        }
+    }
+
     public function setGrupo($id) {
         $this->idGrupo = $id;
         $this->permissoes = array();
         try {
-            $query = "SELECT parametros FROM {$this->tablePg} WHERE id_permissao_grupo = ?";
+            $query = "SELECT * FROM {$this->tablePg} WHERE id_permissao_grupo = ?";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(1, $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -182,6 +201,24 @@ class Permissoes extends BaseModel {
             $stmt = $this->pdo->prepare("INSERT INTO {$this->tablePg} (nome_grupo, parametros) VALUES (?,?)");
             $stmt->bindValue(1, $this->nome_grupo, PDO::PARAM_STR);
             $stmt->bindValue(2, $parametros, PDO::PARAM_STR);
+            $stmt->execute();
+            $this->pdo->commit();
+            $stmt->closeCursor();
+            return true;
+        } catch (PDOException $exc) {
+            $this->pdo->rollback();
+            return $exc->getMessage();
+        }
+    }
+    
+    public function editarGrupo($id) {
+        $parametros = implode(',', $this->parametros_permissao);
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare("UPDATE {$this->tablePg} SET nome_grupo = ?, parametros = ? WHERE id_permissao_grupo = ?");
+            $stmt->bindValue(1, $this->nome_grupo, PDO::PARAM_STR);
+            $stmt->bindValue(2, $parametros, PDO::PARAM_STR);
+            $stmt->bindValue(3, $id, PDO::PARAM_INT);
             $stmt->execute();
             $this->pdo->commit();
             $stmt->closeCursor();
