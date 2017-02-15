@@ -36,6 +36,30 @@
     #ul_nav_nome_user > li > span {
         color: white;
     }
+    #ul_nav_nome_user_admin {
+        margin-left: 30%;
+        margin-top: 1.1%;
+    }
+    #ul_nav_nome_user_admin > li > span {
+        color: white;
+    }
+    #nav_bar_admin {
+        margin-left: 15%;
+    }
+    #nav_bar_admin > li > a {
+        color: white;
+        background-color: #A0522D;
+    }
+    #dropdown-content_admin {
+        display: none;
+        margin-top: 2px;
+        margin-left: -20%;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
     #titulo_site_nav {
         color: white;
         font-family: Bookman;
@@ -87,6 +111,112 @@
         width: 90%;
     }
 
+    /*PÁGINA DE PERMISSÕES*/
+    #div_nav_tabs {
+        margin-left: 25%;
+        margin-top: 2%;
+    }
+    #div_cad_permissao {
+        margin-left: 29%;
+        margin-top: 2%;
+    }
+    #tabela_permissoes {
+        margin-top: 0;
+        border-top: solid #DCDCDC 0;
+    }
+    #tabela_permissoes > thead > tr > th {
+        text-align: center;
+        border-bottom: solid white 0;
+    }
+    #tabela_permissoes > thead > tr > th:first-child  {
+        border-right: solid white 1px;
+    }
+    #tabela_permissoes > thead {
+        background-color: #DCDCDC;
+        border-bottom: solid #DCDCDC 0;
+    }
+    #tabela_permissoes > tbody > tr > td {
+        text-align: center;
+
+    }
+    #tabela_permissoes > tbody > tr > td {
+        padding: 1px;
+    }
+    #tabela_permissoes > tbody > tr > td:first-child {
+        padding: 5px;
+    }
+    #tabela_permissoes > tfoot > tr > td{
+        border: solid white 1px;
+    }
+    #msg_erro_nova_permissao {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-weight: bold;
+        font-size: 12px;
+        width: 100%;
+        text-align: center;
+    }
+    #msg_erro_novo_grupo {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-weight: bold;
+        font-size: 12px;
+        width: 130%;
+        text-align: center;
+    }
+    #msg_erro_param_permi {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-weight: bold;
+        font-size: 12px;
+        width: 130%;
+        text-align: center;
+    }
+    #div_form_cad_permissao {
+        float: left;
+    }
+    #div_erro_cad_permissao {
+        float: left;
+        margin-left: 25%;
+        margin-top: 5px;
+    }
+    
+    #tabela_grupos {
+        margin-top: 0;
+        border-top: solid #DCDCDC 0;
+    }
+    #tabela_grupos > thead > tr > th {
+        text-align: center;
+        border-bottom: solid white 0;
+    }
+    #tabela_grupos > thead > tr > th:first-child  {
+        border-right: solid white 1px;
+    }
+    #tabela_grupos > thead {
+        background-color: #DCDCDC;
+        border-bottom: solid #DCDCDC 0;
+    }
+    #tabela_grupos > tbody > tr > td {
+        text-align: center;
+
+    }
+    #tabela_grupos > tbody > tr > td {
+        padding: 1px;
+    }
+    #tabela_grupos > tbody > tr > td:first-child {
+        padding: 5px;
+    }
+    #tabela_grupos > tfoot > tr > td{
+        border: solid white 1px;
+    }
+    .botao {
+        width: 60px;
+        height: 30px;
+    }
+    #div_head_grupo_permissao > h5 {
+        font-weight: bold;
+    }
+    
     /*CADASTRO DE NOVO CLIENTE*/
 
     #section_cadastro_cliente {
@@ -316,9 +446,23 @@
         text-align: justify;
         color: white;
     }
-    
+    #section_quem_somos {
+        height: 605px;
+        margin-top: -1.5%;
+    }
     .pizza_imagem_fundo {
-        background-image: url('/storage/imagens/pizza_quem_somos.jpg');
+        background-image: url('/imgs/pizza_quem_somos.jpg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-origin: padding-box;
+        bottom: 0;
+        color: black;
+        left: 0;
+        overflow: auto;
+        right: 0;
+        text-align: center;
+        top: 0;
+        background-size: cover;
     }
     
     /*PÁGINA TERMOS E CONDIÇÕES DE USO*/
@@ -342,6 +486,63 @@
         font-weight: bold;
     }
     
+    /*PÁGINA HOME CLIENTE*/
+    #div_cardapio_body {
+        margin-left: 12%;
+    }
+    #div_cardapio {
+        padding-top: 9px;
+        padding-bottom: 0;
+        background-color: #A0522D;
+        margin-left: 12%;
+        margin-top: 2%;
+    }
+    #div_cardapio > p {
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
+    #div_cardapio_menu {
+        padding: 8px;
+    }
+    .borda_cinza {
+        border: #D3D3D3 1px solid;
+    }
+    #input_buscar_menu {
+        width: 70%;
+        float: right;
+    }
+    #div_imagem_produto {
+        float: left;
+        width: 18%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    #div_desc_produto {
+        width: 58%;
+        float: left;
+    }
+    #div_preco_produto {
+        width: 15%;
+        margin-left: 6%;
+        padding-left: 18px;
+        float: left;
+        padding-top: 20px;
+        padding-bottom: 10px;
+    }
+    #div_produto_add_car {
+        width: 3%;
+        float: left;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        padding-left: 2px;
+    }
+    #div_produto_menu {
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
 }    
 
 @media (min-width: 1440px) {

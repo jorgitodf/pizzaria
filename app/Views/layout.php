@@ -42,7 +42,7 @@
                 $("#dropdown-content").mouseleave(function(){
                     $("#dropdown-content").css("display", "none");
                 });
-            })
+            });
             $(function(){
                 $("#dropdown_menu_admin").mouseover(function(){
                     $("#dropdown-content_admin").css("display", "block");
@@ -52,7 +52,7 @@
                 $("#dropdown-content_admin").mouseleave(function(){
                     $("#dropdown-content_admin").css("display", "none");
                 });
-            })
+            });
         </script>
     </body>
 </html>

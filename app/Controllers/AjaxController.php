@@ -6,6 +6,7 @@ use Core\BaseController;
 use Core\Container;
 use App\Models\Cidade;
 use App\Models\Bairro;
+use App\Models\Categoria;
 use Core\DataBase;
 
 class AjaxController extends BaseController{
@@ -13,12 +14,14 @@ class AjaxController extends BaseController{
     protected $modelCidade;
     protected $modelCliente;
     protected $modelBairro;
+    protected $modelCategoria;
     
     public function __construct() {
         parent::__construct();
         $this->modelCliente = Container::getModel("Cliente");
         $this->modelCidade = new Cidade(DataBase::getConexao());
         $this->modelBairro = new Bairro(DataBase::getConexao());
+        $this->modelCategoria = new Categoria(DataBase::getConexao());
         if ($this->modelCliente->isLogged() == false) {
             Redirect::route('/login');
             exit;
@@ -54,6 +57,17 @@ class AjaxController extends BaseController{
                 //$json = array('status' => 'error', 'message' => 'Adicione o Bairro clicando no + acima!');
             }
             echo json_encode($json);
+        }
+    }
+    
+    public function buscarMenu() {
+        if (isset($_POST['buscar_menu'])) {
+           if ($this->modelCategoria->getAllCategorias() == true) {
+               $json = array('status' => 'success', 'message' => $this->modelCategoria->getAllCategorias());
+           } else {
+               $json = array('status' => 'error', 'message' => 'Categoria Vazia');
+           }
+           echo json_encode($json);
         }
     }
 

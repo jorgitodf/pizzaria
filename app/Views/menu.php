@@ -25,12 +25,7 @@
                 </li>
             </ul>
             <?php else: ?>
-            <?php if (isset($this->view->permissao) && $this->view->permissao == true): ?>
-                <ul class="nav navbar-nav" id="ul_nav_nome_user_admin">
-                    <li>
-                        <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>
-                    </li>
-                </ul>
+            <?php if (isset($this->view->permissao) && $this->view->permissao == 'Admin'): ?>
                 <ul class="nav navbar-nav" id="nav_bar_admin">
                     <li class="dropdown" id="dropdown_menu_admin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administração</a>
@@ -39,10 +34,15 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav" id="ul_nav_nome_user_admin">
+                    <li>
+                        <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right" id="ul_logout">
                     <li><a href="/login/logout">Logout</a></li>
                 </ul>
-            <?php else: ?>
+            <?php elseif ($this->view->permissao == 'Cliente'): ?>
                 <ul class="nav navbar-nav" id="ul_nav_nome_user">
                     <li>
                         <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>

@@ -16,6 +16,7 @@ class Permissoes extends BaseModel {
     private $idGrupo;
     private $nome_grupo;
     private $parametros_permissao = array();
+    private $permissoes = array();
     private $parametros;
     private $nome_parametro;
 
@@ -77,6 +78,25 @@ class Permissoes extends BaseModel {
             $this->parametros_permissao = $parametros_permissao;
         }
     }
+    
+    public function getNomeGrupoCliente($idGrupo) {
+        try {
+            $query = "SELECT nome_grupo FROM {$this->tablePg} WHERE id_permissao_grupo = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $idGrupo, PDO::PARAM_INT);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+                $row = $stmt->fetch();
+                $stmt->closeCursor();
+            }
+            return $row;
+        } catch (PDOException $exc) {
+            if ($exc->getCode() == '42S02') {
+                echo "A Tabela <b>{$this->tablePg}</b> Ainda Não Existe..";
+            }
+            exit;
+        }
+    }
 
     public function getGrupo($id) {
         try {
@@ -111,10 +131,9 @@ class Permissoes extends BaseModel {
                 if (empty($row[0]->parametros)) {
                     $row[0]->parametros = '0';
                 }
-                //$params = $row->parametros;
-                $query = "SELECT nome_parametro FROM {$this->tablePp} WHERE id_permissao_parametros IN (?)";
+                $params = $row[0]->parametros;
+                $query = "SELECT nome_parametro FROM {$this->tablePp} WHERE id_permissao_parametros IN ($params)";
                 $stmt = $this->pdo->prepare($query);
-                $stmt->bindValue(1, $row[0]->parametros, PDO::PARAM_INT);
                 $stmt->execute();
                 if ($stmt->rowCount() > 0) {
                     foreach ($stmt->fetchAll() as $item) {

@@ -1,5 +1,38 @@
 $(document).ready(function () {
+    
+    //BUSCAR DADOS CATEGORIA PARA PREENCHER MENU NO HOME CLIENTE
+    var buscar_menu = $("#menu_cardapio").attr("data-toggle");
+        $.ajax({
+            type: "POST",
+            url: "/menu/buscar",
+            data: {buscar_menu: buscar_menu},
+            dataType: 'json',
+            success: function (retorno) {
+                if (retorno.status === 'error' ) {
+                    Reset();
+                } else if (retorno.status === 'success') {
+                    var option = '<option value="">Filtrar Menu</option>';
+                    $.each(retorno.message, function(i, obj) {
+                        option += '<option value="'+ obj.id_categoria + '">' + obj.categoria + '</option>';
+                    });
+                    $('#menu').html(option); 
+                }
+                else {
+                    alert(retorno);
+                }
+            },
+            fail: function(){
+                alert('ERRO: Falha ao carregar o script.');
+            }
+        });
 
+    //CAPTURA O VALOR DA CATEGORIA AO SER SELECIONADA COM O MOUSE MENU NO HOME CLIENTE
+    $("#menu").change(function(){
+        var categoria = $("#menu").val();
+        
+    });
+        
+        
     $("#sigla_uf").change(function(e){
         var sigla_uf = $("#sigla_uf").val();
         e.preventDefault();

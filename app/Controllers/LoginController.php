@@ -50,7 +50,7 @@ class LoginController extends BaseController {
     
     public function logout() {
         $this->modelCliente->setLoggedUser();
-        if ($this->modelCliente->possuiPermissao('completo')) {
+        if ($this->modelCliente->possuiPermissao('completo') || $this->modelCliente->possuiPermissao('logout')) {
             unset($_SESSION['ccUser']);
             Redirect::route('/home');
         } else {

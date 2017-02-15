@@ -8,9 +8,9 @@
             <div class="" id="body_quem_somos">
                 <p>"A Pizzaria Novo Sabor é uma pizzaria tradicional que vende qualidade desde 1996. Pertence à família Skywalker desde então 
                     até os dias atuais.</p>
-                <p>Durante o ano funciona de terça-feira à domingo e nos finais de ano, novembro e dezembro funciona a semana toda, 
-                    de segunda-feira a domingo, sempre no horário entre 15h00 e 23h00.</p>
-                <p>Os nossos funcionários estão conosco de há muito tempo. Temos funcionários já se aposentando e isto mostra o 
+                <p>Durante o ano funciona de domingo à sábado com exceção da segunda-feira e nos finais de ano, novembro e dezembro funciona a semana toda, 
+                    de domingo a segunda-feira, sempre no horário das 15h às 23h.</p>
+                <p>Os nossos funcionários estão conosco há muito tempo. Temos funcionários já se aposentando e isto mostra o 
                     carinho que eles têm e tiveram para com a Pizzaria Novo Sabor nesses 20 anos.</p>
                 <p>Vejam o nosso cardápio e venha conhecer o San Marino. Vale a pena!"</p>
             </div>

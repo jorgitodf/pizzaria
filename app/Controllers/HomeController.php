@@ -27,12 +27,15 @@ class HomeController extends BaseController {
         $this->setPageTitle('Home');
         $this->modelCliente->setLoggedUser();
         $this->modelCliente->getUserInfo();
-        
         if (!$this->modelCliente->getUserInfoUser()['complemento']) {
             $this->renderView('cadastro/endereco', 'layout', 'menu');
-        }
-        $this->view->permissao = $this->modelCliente->possuiPermissao('completo');
-        $this->renderView('home/index', 'layout', 'menu');
+        } elseif ($this->modelCliente->getGrupoCliente()->nome_grupo == 'Admin') {
+            $this->view->permissao = 'Admin';
+            $this->renderView('home/index', 'layout', 'menu');
+        } elseif ($this->modelCliente->getGrupoCliente()->nome_grupo == 'Cliente') {
+            $this->view->permissao = 'Cliente';
+            $this->renderView('home/cliente', 'layout', 'menu');
+        }    
     }
 
 }

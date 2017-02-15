@@ -7,6 +7,8 @@ use PDOException;
 use Core\Helpers;
 use PDO;
 use Core\Container;
+use App\Models\Permissoes;
+use Core\DataBase;
 
 class Cliente extends BaseModel {
     
@@ -37,7 +39,7 @@ class Cliente extends BaseModel {
         $this->email = $email;
         $this->senha = $senha;
         $this->data_cadastro = $data_cadastro;
-        $this->modelPermissoes = Container::getModel("Permissoes");
+        $this->modelPermissoes = new Permissoes(DataBase::getConexao());
         $this->modelEndereco = Container::getModel("Endereco");
         $this->modelLogradouro = Container::getModel("Logradouro");
         $this->modelBairro = Container::getModel("Bairro");
@@ -259,6 +261,11 @@ class Cliente extends BaseModel {
         }
     }
     
+    public function getGrupoCliente() {
+        return $this->modelPermissoes->getNomeGrupoCliente($this->getUserInfo()->fk_id_permissao_grupo);
+    }
+
+
     public function setLoggedUser() {
         if (isset($_SESSION['ccUser']) && !empty($_SESSION['ccUser'])) {
             try {
