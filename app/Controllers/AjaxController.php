@@ -10,7 +10,7 @@ use App\Models\Categoria;
 use App\Models\Produtos;
 use Core\DataBase;
 
-class AjaxController extends BaseController{
+class AjaxController extends BaseController {
     
     protected $modelCidade;
     protected $modelCliente;
@@ -81,7 +81,7 @@ class AjaxController extends BaseController{
            if ($this->modelProdutos->getAllProdutosByCategoria($categoria) == true) {
                $json = array('status' => 'success', 'message' => $this->modelProdutos->getAllProdutosByCategoria($categoria));
            } else {
-               $json = array('status' => 'error', 'message' => 'Sem Produtos para essa Cateforia');
+               $json = array('status' => 'error', 'message' => false);
            }
            echo json_encode($json);
         }

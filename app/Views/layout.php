@@ -18,7 +18,7 @@
         <?php $this->menu(); ?>
     </header>
     <body>
-        <main>    
+        <main id="main_principal">    
         <?php $this->content(); ?>	
         </main>
         
@@ -34,23 +34,43 @@
                 $("#cep").mask("99999-999");
             });
             $(function(){
-                $("#dropdown_menu").mouseover(function(){
-                    $("#dropdown-content").css("display", "block");
-                });
-            });
-            $(function () {
-                $("#dropdown-content").mouseleave(function(){
-                    $("#dropdown-content").css("display", "none");
-                });
-            });
-            $(function(){
-                $("#dropdown_menu_admin").mouseover(function(){
+                $("#dropdown_menu_admin").mousemove(function(){
                     $("#dropdown-content_admin").css("display", "block");
                 });
             });
             $(function () {
                 $("#dropdown-content_admin").mouseleave(function(){
                     $("#dropdown-content_admin").css("display", "none");
+                });
+            });
+            
+            $(function(){
+                $("#dropdown_menu_cad").mousemove(function(){
+                    $("#dropdown-content_menu_cad").css("display", "block");
+                });
+            });
+            $(function(){
+                $("#dropdown-content_menu_cad").mouseleave(function(){
+                    $("#dropdown-content_menu_cad").css("display", "none");
+                });
+            });
+            
+            $(function () {
+                $("body").mouseleave(function(){
+                    $("#dropdown-content_admin").css("display", "none");
+                    $("#dropdown-content_menu_cad").css("display", "none");
+                });
+            });
+            $(function () {
+                $("#titulo_site_nav").mouseover(function(){
+                    $("#dropdown-content_admin").css("display", "none");
+                    $("#dropdown-content_menu_cad").css("display", "none");
+                });
+                $("#dropdown_menu_cad").mouseover(function(){
+                    $("#dropdown-content_admin").css("display", "none");
+                });
+                $("#dropdown_menu_admin").mouseover(function(){
+                    $("#dropdown-content_menu_cad").css("display", "none");
                 });
             });
         </script>

@@ -43,7 +43,9 @@ $(document).ready(function () {
                         div += '<div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_produto_menu">';
                         div += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu" name="idProduto" value="'+ obj.id + '">';
                         div += '<div class="" id="div_imagem_produto">';
-                        div += '<p>Foto Imagem</p>';
+                        div += '<figure class="thumbnail" id="figure_div">';
+                        div += '<img src="/imgs/produtos/'+ obj.imagem +'" id="imagem"/>';
+                        div += '</figure>';
                         div += '</div>';
                         div += '<div class="" id="div_desc_produto">';
                         div += '<p>'+ obj.produto + '</p>';

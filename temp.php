@@ -1,4 +1,5 @@
-
+            <div class="row-fluid" id="produto_menu">
+            </div>
             <div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_produto_menu">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu" name="idProduto" value="">
                     <div class="" id="div_imagem_produto">

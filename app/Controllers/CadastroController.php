@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use Core\BaseController;
-use Core\Container;
 use Core\Helpers;
 use App\Models\Uf;
 use App\Models\Logradouro;

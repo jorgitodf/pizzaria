@@ -34,6 +34,14 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav" id="nav_bar_menu_cadastros">
+                    <li class="dropdown" id="dropdown_menu_cad">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastros</a>
+                        <ul class="dropdown-menu" id="dropdown-content_menu_cad">
+                            <li><a href="/produtos">Produtos</a></li>
+                        </ul>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav" id="ul_nav_nome_user_admin">
                     <li>
                         <span><b>Seja bem Vindo(a):</b> <?php echo $_SESSION['ccUser']['nome_completo']; ?></span>

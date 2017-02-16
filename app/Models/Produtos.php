@@ -61,7 +61,7 @@ class Produtos extends BaseModel {
     public function getAllProdutosByCategoria($categoria) {
         try {
             $query = "SELECT prod.id_produto as id, prod.descricao as descricao, concat(prod.nome_produto,' - ', prod.tamanho) as produto, prod.volume as vol, "
-                    . "prod.qtd_estoque as qtd, prod.valor as valor, prod.fk_id_categoria as idCategoria FROM {$this->table} as prod "
+                    . "prod.qtd_estoque as qtd, prod.valor as valor, prod.prod_nome_imagem as imagem, prod.fk_id_categoria as idCategoria FROM {$this->table} as prod "
                     . "WHERE fk_id_categoria = ?";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(1, $categoria->id_categoria, PDO::PARAM_INT);
