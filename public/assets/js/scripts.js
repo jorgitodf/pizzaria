@@ -29,7 +29,45 @@ $(document).ready(function () {
     //CAPTURA O VALOR DA CATEGORIA AO SER SELECIONADA COM O MOUSE MENU NO HOME CLIENTE
     $("#menu").change(function(){
         var categoria = $("#menu").val();
-        
+        $.ajax({
+            type: "POST",
+            url: "/menu/buscar-produtos",
+            data: {menu: categoria},
+            dataType: 'json',
+            success: function (retorno) {
+                if (retorno.status === 'error' ) {
+
+                } else if (retorno.status === 'success') {
+                    var div = '';
+                    $.each(retorno.message, function(i, obj) {
+                        div += '<div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_produto_menu">';
+                        div += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu" name="idProduto" value="'+ obj.id + '">';
+                        div += '<div class="" id="div_imagem_produto">';
+                        div += '<p>Foto Imagem</p>';
+                        div += '</div>';
+                        div += '<div class="" id="div_desc_produto">';
+                        div += '<p>'+ obj.produto + '</p>';
+                        div += '<p>'+ obj.descricao + '</p>';
+                        div += '</div>';
+                        div += '<div class="" id="div_preco_produto">';
+                        div += '<p>R$ '+ obj.valor + '</p>';
+                        div += '</div>';
+                        div += '<div class="" id="div_produto_add_car">';
+                        div += '<p><span class="glyphicon glyphicon-plus"></span></p>';
+                        div += '</div>';
+                        div += '</div>';
+                        div += '</div>';
+                    });
+                    $('#produto_menu').html(div); 
+                }
+                else {
+                    alert(retorno);
+                }
+            },
+            fail: function(){
+                alert('ERRO: Falha ao carregar o script.');
+            }
+        });
     });
         
         

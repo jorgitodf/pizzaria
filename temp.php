@@ -1,4 +1,38 @@
-<?php
+
+            <div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_produto_menu">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu" name="idProduto" value="">
+                    <div class="" id="div_imagem_produto">
+                        <p>Foto Imagem</p>
+                    </div>
+                    <div class="" id="div_desc_produto">
+                        <p>Pizza de Calabresa - Júnior</p>
+                        <p>Mussarela e Calabresa</p>
+                    </div>
+                    <div class="" id="div_preco_produto">
+                        <p>R$ 14,00</p>
+                    </div>
+                    <div class="" id="div_produto_add_car">
+                        <p><span class="glyphicon glyphicon-plus"></span></p>
+                    </div>
+                </div>    
+            </div>
+            <div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_produto_menu">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu">
+                    <div class="" id="div_imagem_produto">
+                        <p>Foto Imagem</p>
+                    </div>
+                    <div class="" id="div_desc_produto">
+                        <p>Pizza de Calabresa - Júnior</p>
+                        <p>Mussarela e Calabresa</p>
+                    </div>
+                    <div class="" id="div_preco_produto">
+                        <p>R$ 14,00</p>
+                    </div>
+                    <div class="" id="div_produto_add_car">
+                        <p><span class="glyphicon glyphicon-plus"></span></p>
+                    </div>
+                </div>    
+            </div>
 
     foreach ($this->view->cliente  as $key => $value) {
         echo $value->nome;
