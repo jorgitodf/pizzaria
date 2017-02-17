@@ -54,7 +54,6 @@ DROP TABLE IF EXISTS `tb_categoria`;
 CREATE TABLE `tb_categoria` (
   `id_categoria` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `categoria` varchar(60) NOT NULL,
-  `categoria_id_html` varchar(60) NOT NULL,
   PRIMARY KEY (`id_categoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -65,7 +64,7 @@ CREATE TABLE `tb_categoria` (
 
 LOCK TABLES `tb_categoria` WRITE;
 /*!40000 ALTER TABLE `tb_categoria` DISABLE KEYS */;
-INSERT INTO `tb_categoria` VALUES (1,'Todos','todos'),(2,'Pizzas Especiais','pizzas_especiais'),(3,'Pizzas Clássicas','pizzas_classicas'),(4,'Pizzas Tradicionais','pizzas_tradicionais'),(5,'Bebidas','bebidas'),(6,'Crepes','crepes'),(7,'Promoções','promocoes'),(8,'Sanduiches','sanduiches');
+INSERT INTO `tb_categoria` VALUES (1,'Todos'),(2,'Pizzas Especiais'),(3,'Pizzas Clássicas'),(4,'Pizzas Tradicionais'),(5,'Bebidas'),(6,'Crepes'),(7,'Promoções'),(8,'Sanduiches');
 /*!40000 ALTER TABLE `tb_categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,6 +165,53 @@ INSERT INTO `tb_endereco` VALUES (2,'16 Conjunto A Casa','19',73050161,30,25,6,'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tb_forma_pagamento`
+--
+
+DROP TABLE IF EXISTS `tb_forma_pagamento`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tb_forma_pagamento` (
+  `id_forma_pagamento` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `forma_pagamento` varchar(90) NOT NULL,
+  PRIMARY KEY (`id_forma_pagamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_forma_pagamento`
+--
+
+LOCK TABLES `tb_forma_pagamento` WRITE;
+/*!40000 ALTER TABLE `tb_forma_pagamento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_forma_pagamento` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_frete`
+--
+
+DROP TABLE IF EXISTS `tb_frete`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tb_frete` (
+  `id_frete` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `tipo_frete` varchar(80) NOT NULL,
+  `valor_frete` decimal(6,2) NOT NULL,
+  PRIMARY KEY (`id_frete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_frete`
+--
+
+LOCK TABLES `tb_frete` WRITE;
+/*!40000 ALTER TABLE `tb_frete` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_frete` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_historico_produto`
 --
 
@@ -179,10 +225,10 @@ CREATE TABLE `tb_historico_produto` (
   `fk_id_produto` int(10) unsigned NOT NULL,
   `fk_id_cliente` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id_historico_produto`),
-  KEY `fk_tb_historico_produto_tb_produto1_idx` (`fk_id_produto`),
-  KEY `fk_tb_historico_produto_tb_cliente1_idx` (`fk_id_cliente`),
-  CONSTRAINT `fk_tb_historico_produto_tb_cliente1` FOREIGN KEY (`fk_id_cliente`) REFERENCES `tb_cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tb_historico_produto_tb_produto1` FOREIGN KEY (`fk_id_produto`) REFERENCES `tb_produto` (`id_produto`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_tb_historico_produto_tb_produto1_idx` (`fk_id_produto`) USING BTREE,
+  KEY `fk_tb_historico_produto_tb_cliente1_idx` (`fk_id_cliente`) USING BTREE,
+  CONSTRAINT `fk_tb_historico_produto_tb_cliente1` FOREIGN KEY (`fk_id_cliente`) REFERENCES `tb_cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `fk_tb_historico_produto_tb_produto1` FOREIGN KEY (`fk_id_produto`) REFERENCES `tb_produto` (`id_produto`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,16 +249,16 @@ DROP TABLE IF EXISTS `tb_itens_pedido`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tb_itens_pedido` (
-  `id_itens_pedido` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_itens_pedido` int(8) unsigned zerofill NOT NULL,
   `quantidade` mediumint(3) unsigned NOT NULL,
   `valor_unitario` decimal(6,2) NOT NULL,
   `fk_id_pedido` int(8) unsigned zerofill NOT NULL,
-  `fk_id_produto` int(10) unsigned NOT NULL,
+  `fk_id_produto_venda` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id_itens_pedido`),
   KEY `fk_tb_itens_pedido_tb_pedido_idx` (`fk_id_pedido`) USING BTREE,
-  KEY `fk_tb_itens_pedido_tb_produto_idx` (`fk_id_produto`) USING BTREE,
+  KEY `fk_tb_itens_pedido_tb_produto_venda1_idx` (`fk_id_produto_venda`) USING BTREE,
   CONSTRAINT `fk_tb_itens_pedido_tb_pedido` FOREIGN KEY (`fk_id_pedido`) REFERENCES `tb_pedido` (`id_pedido`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_tb_itens_pedido_tb_produto` FOREIGN KEY (`fk_id_produto`) REFERENCES `tb_produto` (`id_produto`) ON UPDATE NO ACTION
+  CONSTRAINT `fk_tb_itens_pedido_tb_produto_venda1` FOREIGN KEY (`fk_id_produto_venda`) REFERENCES `tb_produto_venda` (`id_produto_venda`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -261,10 +307,18 @@ CREATE TABLE `tb_pedido` (
   `data_pedido` datetime NOT NULL,
   `valor_total` varchar(45) NOT NULL,
   `tempo_entrega` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `troco` enum('S','N') NOT NULL,
+  `valor_troco` decimal(6,2) DEFAULT NULL,
   `fk_id_cliente` int(10) unsigned NOT NULL,
+  `fk_id_frete` tinyint(3) unsigned NOT NULL,
+  `fk_id_forma_pagamento` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `fk_tb_pedido_tb_cliente1_idx` (`fk_id_cliente`),
-  CONSTRAINT `fk_tb_pedido_tb_cliente1` FOREIGN KEY (`fk_id_cliente`) REFERENCES `tb_cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_tb_pedido_tb_frete1_idx` (`fk_id_frete`) USING BTREE,
+  KEY `fk_tb_pedido_tb_forma_pagamento1_idx` (`fk_id_forma_pagamento`) USING BTREE,
+  CONSTRAINT `fk_tb_pedido_tb_cliente1` FOREIGN KEY (`fk_id_cliente`) REFERENCES `tb_cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_pedido_tb_forma_pagamento1` FOREIGN KEY (`fk_id_forma_pagamento`) REFERENCES `tb_forma_pagamento` (`id_forma_pagamento`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `fk_tb_pedido_tb_frete1` FOREIGN KEY (`fk_id_frete`) REFERENCES `tb_frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -338,16 +392,17 @@ CREATE TABLE `tb_produto` (
   `nome_produto` varchar(70) NOT NULL,
   `descricao` text NOT NULL,
   `volume` varchar(10) DEFAULT NULL,
-  `tamanho` enum('P','M','G') DEFAULT NULL,
-  `preco_compra` decimal(8,2) DEFAULT NULL,
+  `tamanho` enum('Pequeno','Médio','Grande','Júnior') DEFAULT NULL,
+  `preco_compra` decimal(8,2) NOT NULL,
+  `data_compra` date NOT NULL,
+  `qtd_comprada` mediumint(4) unsigned NOT NULL,
   `qtd_estoque` mediumint(4) unsigned DEFAULT NULL,
-  `valor` decimal(8,2) NOT NULL,
   `prod_nome_imagem` varchar(220) DEFAULT NULL,
   `fk_id_categoria` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id_produto`),
-  KEY `fk_tb_produto_tb_categoria1_idx` (`fk_id_categoria`),
-  CONSTRAINT `fk_tb_produto_tb_categoria1` FOREIGN KEY (`fk_id_categoria`) REFERENCES `tb_categoria` (`id_categoria`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  KEY `fk_tb_produto_tb_categoria1_idx` (`fk_id_categoria`) USING BTREE,
+  CONSTRAINT `fk_tb_produto_tb_categoria1` FOREIGN KEY (`fk_id_categoria`) REFERENCES `tb_categoria` (`id_categoria`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,8 +411,59 @@ CREATE TABLE `tb_produto` (
 
 LOCK TABLES `tb_produto` WRITE;
 /*!40000 ALTER TABLE `tb_produto` DISABLE KEYS */;
-INSERT INTO `tb_produto` VALUES (1,'Pizza de Calabreza','Mussarela e Calabresa',NULL,'M',NULL,20,14.00,'calabresa.jpg',4),(2,'Coca Cola','Coca Cola 600ml','600 ml','M',NULL,30,3.50,'coca_cola_600.jpg',5),(3,'Crepe','Crepe com recheio de Mussarela e Presunto',NULL,'M',NULL,20,8.00,'crepe_queijo.jpg',6);
+INSERT INTO `tb_produto` VALUES (1,'Pizza Calabresa','Recheio de Calabresa com Mussarela',NULL,'Júnior',18.00,'2017-02-17',30,30,'calabresa.jpg',4),(2,'Coca Cola','Coca Cola de 600 ML','600ml','Médio',3.50,'2017-02-17',35,35,'coca_cola_600.jpg',5),(3,'Crepe','Recheio de Presunto e Mussarela','','Pequeno',4.50,'2017-02-17',28,28,'crepe_queijo.jpg',6),(4,'Guaraná','Guaraná de 600 ML','600ml','Médio',3.85,'2017-02-17',32,32,'guarana_600.jpg',5);
 /*!40000 ALTER TABLE `tb_produto` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER tg_atualiza_tab_produto_venda
+AFTER UPDATE ON tb_produto
+FOR EACH ROW BEGIN
+	SET @id = (SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = NEW.id_produto);
+    IF @id <> 'true' THEN
+		INSERT INTO tb_produto_venda (preco_venda, ativo, data_cadastro, fk_id_produto) VALUES (fncCalculaPrecoVendaProduto(NEW.preco_compra), 'true', NOW(), NEW.id_produto);
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `tb_produto_venda`
+--
+
+DROP TABLE IF EXISTS `tb_produto_venda`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tb_produto_venda` (
+  `id_produto_venda` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `preco_venda` decimal(8,2) NOT NULL,
+  `ativo` enum('true','false') NOT NULL,
+  `data_cadastro` datetime NOT NULL,
+  `fk_id_produto` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id_produto_venda`),
+  KEY `fk_tb_produto_venda_tb_produto1_idx` (`fk_id_produto`) USING BTREE,
+  CONSTRAINT `fk_tb_produto_venda_tb_produto1` FOREIGN KEY (`fk_id_produto`) REFERENCES `tb_produto` (`id_produto`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_produto_venda`
+--
+
+LOCK TABLES `tb_produto_venda` WRITE;
+/*!40000 ALTER TABLE `tb_produto_venda` DISABLE KEYS */;
+INSERT INTO `tb_produto_venda` VALUES (1,22.00,'true','2017-02-17 16:24:01',1),(2,5.00,'true','2017-02-17 16:24:39',2),(3,5.00,'true','2017-02-17 16:24:50',3);
+/*!40000 ALTER TABLE `tb_produto_venda` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -462,6 +568,110 @@ LOCK TABLES `tb_uf` WRITE;
 INSERT INTO `tb_uf` VALUES (1,'AC'),(2,'AL'),(3,'AP'),(4,'AM'),(5,'BA'),(6,'CE'),(7,'DF'),(8,'ES'),(9,'GO'),(10,'MA'),(11,'MT'),(12,'MS'),(13,'MG'),(14,'PR'),(15,'PB'),(16,'PA'),(17,'PE'),(18,'PI'),(19,'RJ'),(20,'RN'),(21,'RS'),(22,'RO'),(23,'RR'),(24,'SC'),(25,'SE'),(26,'SP'),(27,'TO');
 /*!40000 ALTER TABLE `tb_uf` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'pizzaria'
+--
+
+--
+-- Dumping routines for database 'pizzaria'
+--
+/*!50003 DROP FUNCTION IF EXISTS `fncCalculaPrecoVendaProduto` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `fncCalculaPrecoVendaProduto`(valor_compra DECIMAL (8,2)) RETURNS decimal(8,2)
+BEGIN
+	DECLARE valor_venda DECIMAL (8,2);
+    SET valor_venda = CEILING(valor_compra * 1.17);
+RETURN valor_venda;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_atualiza_estoque_produtos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_atualiza_estoque_produtos`(p_id INT)
+BEGIN
+	DECLARE qtd INT;
+	SET qtd = (SELECT qtd_comprada FROM tb_produto WHERE id_produto = p_id);
+    UPDATE tb_produto SET qtd_estoque = qtd WHERE id_produto = p_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_insere_produto_tb_venda` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insere_produto_tb_venda`(p_id INT)
+BEGIN
+	DECLARE p_ativo INT;
+	/* Criando variaveis do loop */
+	declare done int default false;
+	declare idLoop int;
+	declare pcLoop decimal(8,2);
+    
+	/* Criando Cursor para o LOOP */
+	declare crTB_PRODUTO cursor for SELECT
+		p.id_produto as id,
+		p.preco_compra as pc
+	from tb_produto p
+	where id_produto = p_id;
+	-- DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
+	declare continue handler for not found set done = true;
+    
+    open crTB_PRODUTO;
+    
+	-- LOOP
+	read_loop: loop 
+	  -- Obtem os valores da linha
+	  fetch crTB_PRODUTO into idLoop, pcLoop;
+
+	  if done then
+		leave read_loop;
+	  end if;
+
+	end loop;
+    
+    close crTB_PRODUTO;
+    
+    SET p_ativo = (SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = p_id);
+      
+    if p_ativo <> 'true' then
+		INSERT INTO tb_produto_venda (preco_venda, ativo, data_cadastro, fk_id_produto) VALUES (pcLoop, 'true', NOW(), idLoop);
+    end if;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -472,4 +682,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-16 17:20:19
+-- Dump completed on 2017-02-17 17:30:01

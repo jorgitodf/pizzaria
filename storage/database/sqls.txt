@@ -1,0 +1,160 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_atualiza_estoque_produtos`(p_id INT)
+BEGIN
+	DECLARE qtd INT;
+	SET qtd = (SELECT qtd_comprada FROM tb_produto WHERE id_produto = p_id);
+    UPDATE tb_produto SET qtd_estoque = qtd WHERE id_produto = p_id;
+END
+
+CREATE FUNCTION fncCalculaPrecoVendaProduto (valor_compra DECIMAL (8,2))
+RETURNS DECIMAL (8,2)
+BEGIN
+	DECLARE valor_venda DECIMAL (8,2);
+    SET valor_venda = CEILING(valor_compra * 1.17);
+RETURN valor_venda;
+END
+
+SET DELIMITER $$
+CREATE TRIGGER tg_atualiza_tab_produto_venda
+AFTER UPDATE ON tb_produto
+FOR EACH ROW BEGIN
+	SET @id = (SELECT id_produto_venda FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = NEW.id_produto);
+    IF @id <> NULL THEN
+		INSERT INTO tb_produto_venda (preco_venda, ativo, data_cadastro, fk_id_produto) VALUES (fncCalculaPrecoVendaProduto(NEW.preco_compra), 'true', NOW(), NEW.id_produto);
+    END IF;
+END;
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insere_produto_tb_venda`(p_id INT)
+BEGIN
+	DECLARE p_ativo INT;
+	/* Criando variaveis do loop */
+	declare done int default false;
+	declare id int;
+	declare pc decimal(8,2);
+    
+	/* Criando Cursor para o LOOP */
+	declare crTB_PRODUTO cursor for SELECT
+		p.id_produto as id,
+		p.preco_compra as pc
+	from tb_produto p
+	where id_produto = p_id;
+	-- DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
+	declare continue handler for not found set done = true;
+    
+	-- LOOP
+	read_loop: loop 
+	  -- Obtem os valores da linha
+	  fetch crTB_PRODUTO into id, pc;
+
+	  if done then
+		leave read_loop;
+	  end if;
+
+	end loop;
+    
+    SET p_ativo = (SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = p_id);
+      
+    if p_ativo <> 'true' then
+		INSERT INTO tb_produto_venda (preco_venda, ativo, data_cadastro, fk_id_produto) VALUES (pc, 'true', NOW(), id);
+    end if;
+    
+    
+END
+
+
+
+
+SELECT * FROM tb_produto;
+CALL sp_atualiza_estoque_produtos(4);
+SELECT * FROM tb_produto;
+SELECT * FROM tb_produto_venda;
+SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = 3;
+
+CALL sp_insere_produto_tb_venda(4);
+
+SET @id = (SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = 4);
+SELECT @id;
+ALTER TABLE tb_produto AUTO_INCREMENT = 1;
+ALTER TABLE tb_produto_venda AUTO_INCREMENT = 1;
+
+SELECT preco_compra, fncCalculaPrecoVendaProduto(preco_compra) as preco_venda FROM tb_produto;
+
+SELECT * FROM tb_produto;
+
+SHOW TRIGGERS;
+DROP TRIGGER tg_atualiza_tab_produto_venda;
+
+
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `FNCTEMPOPENDENTE`(idTicket INT) RETURNS varchar(10) CHARSET utf8
+    COMMENT 'Retorna o tempo que o chamado ficou pendente'
+BEGIN
+  /* Criando variaveis do loop */
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE historyId INT;
+  DECLARE stateId INT;
+  DECLARE queueId INT;
+  DECLARE historyCreateTime DATETIME;
+  DECLARE historyChangeTime DATETIME;
+  DECLARE tempoTotal INT;
+
+  DECLARE historyIdOld INT;
+  DECLARE stateIdOld INT;
+  DECLARE queueIdOld INT;
+  DECLARE historyCreateTimeOld DATETIME;
+  DECLARE historyChangeTimeOld DATETIME;
+  
+  /* Criando Cursor para o LOOP */
+  DECLARE crHISTORY_TICKET CURSOR FOR SELECT 
+        th.id AS history_id,
+        th.state_id, 
+        th.queue_id,
+        th.create_time AS history_create_time,
+        th.change_time AS history_change_time
+   FROM ticket_history th
+  WHERE 1 = 1
+    AND th.ticket_id = idTicket
+    AND history_type_id IN (1,16,27)
+  ORDER BY th.id;
+  -- DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+  /* Inicializando variaveis */
+  SET tempoTotal = 0;
+  SET historyIdOld = 0;
+  SET stateIdOld = 0;
+  SET queueIdOld = 0;
+  SET historyCreateTimeOld = CURDATE();
+  SET historyChangeTimeOld = CURDATE();
+
+  OPEN crHISTORY_TICKET;
+
+  -- LOOP
+  read_loop: LOOP 
+      -- Obtem os valores da linha
+      FETCH crHISTORY_TICKET INTO historyId, stateId, queueId, historyCreateTime, historyChangeTime;
+
+      IF done THEN
+        LEAVE read_loop;
+      END IF;
+  	  
+      IF (stateIdOld IN (6)) THEN
+         -- Soma tempo
+         SET tempoTotal = tempoTotal + fncTime2ToInt(fncTotalHorasUteis(historyCreateTimeOld, historyCreateTime));
+      END IF;
+      -- Reinicia as variaveis do proximo Registro
+      SET historyCreateTimeOld = historyCreateTime;
+      SET historyChangeTimeOld = historyChangeTime;
+      SET stateIdOld = stateId; 
+      SET queueIdOld = queueId; 
+  END LOOP;
+
+  CLOSE crHISTORY_TICKET;
+  
+  RETURN fncIntToTime(tempoTotal);
+END$$
+DELIMITER ;
+
+
