@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php $this->getPageTitle("|"); ?>Pizzaria Novo Sabor</title>
         <link href="/assets/css/style.css" rel="stylesheet">
+        <link href="/assets/js/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
         <link rel="icon" href="/favicon.png" type="image/x-icon">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,7 +28,11 @@
         <script src="/assets/js/jquery.maskMoney.js"></script>
         <script src="/assets/js/jquery.maskedinput.js"></script>
         <script src="/assets/js/scripts.js"></script>
+        <script src="/assets/js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
         <script type="text/javascript">
+            $(document).ready(function () {
+                $("#preco_compra").maskMoney({showSymbol: true, symbol: "R$ ", decimal: ",", thousands: "."});
+            });
             jQuery(function($){
                 $("#cpf").mask("999.999.999-99");
                 $("#tel_celular").mask("(99) 99999-9999");
@@ -71,6 +76,17 @@
                 });
                 $("#dropdown_menu_admin").mouseover(function(){
                     $("#dropdown-content_menu_cad").css("display", "none");
+                });
+            });
+            $(function() { 
+                $("#data_compra").datepicker({
+                    dateFormat: 'dd/mm/yy', 
+                    changeMonth: true,changeYear: true, 
+                    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+                    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+                    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+                    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
                 });
             });
         </script>

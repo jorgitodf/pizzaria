@@ -29,6 +29,20 @@ abstract class Helpers {
         return false;
     }
     
+    public static function validaEnvioImagem($imagem) {
+        if (empty($imagem['name']) && $imagem['size'] == 0) {
+            $json = array('status' => 'error', 'message' => 'Selecione uma Imagem!');
+            return $json;
+        } elseif ((!empty($imagem['name']) && $imagem['size'] > 0) && $imagem['size'] > 2147483648) {
+            $json = array('status' => 'error', 'message' => 'O Tamanho da Imagem excede o Limite de 2MB!');
+            return $json;
+        } elseif (!in_array($imagem['type'], array('image/jpeg', 'image/jpg', 'image/png'))) {
+            $json = array('status' => 'error', 'message' => 'Formato de Imagem Não Suportafo!');
+            return $json;
+        }
+        return false;
+    }
+    
     public static function validaDescricaoProduto($string) {
         if (empty($string) || $string = "") {
             $json = array('status' => 'error', 'message' => 'Preencha a Descrição do Produto!');
@@ -56,6 +70,14 @@ abstract class Helpers {
     public static function validaCategoriaProduto($cat) {
         if (empty($cat) || $cat = "") {
             $json = array('status' => 'error', 'message' => 'Preencha a Categoria do Produto!');
+            return $json;
+        } 
+        return false;
+    }
+    
+    public static function validaDataCompraProduto($data) {
+        if (empty($data) || $data = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha a Data da Compra do Produto!');
             return $json;
         } 
         return false;
@@ -255,5 +277,15 @@ abstract class Helpers {
         $valor3 = trim(str_replace('R$ ', '', $valor2));
         return $valor3;
     }
+    
+    public static function formataData($data) {
+        if (!empty($data)) {
+            $d = explode("/", $data);
+            $data_format = (trim($d[2]."-".$d[1]."-".$d[0]));
+            return $data_format;
+        }
+    }
 
+	
+	
 }

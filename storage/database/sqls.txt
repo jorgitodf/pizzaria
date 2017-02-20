@@ -164,3 +164,15 @@ DELIMITER ;
 DECLARE result VARCHAR(10);
 SET result = (SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = id);
 RETURN result;
+
+
+SELECT * FROM tb_produto;
+SELECT * FROM tb_produto_venda;
+ALTER TABLE tb_produto_venda AUTO_INCREMENT = 1;
+
+
+1	Pizza Calabresa			Júnior	18.00	2017-02-17	30	30	calabresa.jpg	4
+2	Coca Cola	Coca Cola de 600 ML	600ml	Médio	3.50	2017-02-17	35	35	coca_cola_600.jpg	5
+3	Crepe	Recheio de Presunto e Mussarela		Pequeno	4.50	2017-02-17	28	28	crepe_queijo.jpg	6
+4	Guaraná	Guaraná de 600 ML	600ml	Médio	3.85	2017-02-17	32	32	guarana_600.jpg	5
+5	Pizza	Pizza com recheio	1	Grande	20.00	2017-02-20	60		b77e62c3107ee4d604fbca7c5965a900.png	4

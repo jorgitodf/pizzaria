@@ -15,10 +15,10 @@
                             <textarea class="form-control" rows="4" name="descricao_produto" id="descricao_produto" placeholder="Informe a Descrição do Produto"></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="volume" id="volume" placeholder="Informe o Volume do Produto">
+                            <input type="text" class="form-control" name="volume" id="volume" placeholder="Volume do Produto - Ex: 600 ml">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="tamanho" id="tamanho" placeholder="Informe o Tamamho do Produto">
+                            <input type="text" class="form-control" name="tamanho" id="tamanho" placeholder="Tamamho do Produto - Ex: Grande, Médio...">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="div_form_cad_produtos_right">
@@ -39,13 +39,13 @@
                         <div class="form-group">
                             <input type="file" class="form-control" name="imagem" id="imagem">
                         </div>
-                        <div class="form-group retorno" id="">
-                        </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 cor_cinza_claro">
-                    <div class="form-group" id="div_btn_cad_prod">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 cor_cinza_claro" id="div_rodape_cad_prod">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6" id="div_btn_cad_prod">
                         <button type="submit" class="btn btn-success btn-sm" id="btn_cad_produtos">Cadastrar</button>
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6 retorno" id="div_retorno_cad_prod">
                     </div>
                 </div>
             </div>

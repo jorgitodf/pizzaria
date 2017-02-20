@@ -599,6 +599,13 @@
     #div_form_cad_produtos_body {padding: 0 0 0 0;}
     #div_form_cad_produtos_left {padding: 12px 10px 10px 10px;}
     #div_form_cad_produtos_right {padding: 12px 10px 10px 10px;}
+    #imagem {height: 36px;}
+    #div_btn_cad_prod {padding-top: 16px; padding-bottom: 16px; padding-left: 12px;}
+    #div_rodape_cad_prod {margin-top: 0; padding-bottom: 0; padding-left: 0;}
+    #div_retorno_cad_prod {margin-top: 5px; padding-bottom: 0; width: 50%;}
+    #div_categoria {margin-top: 5.6%;}
+    #msgErroCadProduto {padding-top: 5px; padding-bottom: 5px; margin-top: 2%; text-align: center; width: 104%;}
+    #msgCadProdutoSuccess {padding-top: 5px; padding-bottom: 5px; width: 104%; text-align: center;}
 
 }    
 
@@ -1236,8 +1243,11 @@
     #div_form_cad_produtos_left {padding: 12px 10px 10px 10px;}
     #div_form_cad_produtos_right {padding: 12px 10px 10px 10px;}
     #imagem {height: 36px;}
-    #div_btn_cad_prod {margin-top: 10px; margin-bottom: 10px;}
-    #msgErroCadProduto {text-align: center;}
+    #div_btn_cad_prod {padding-top: 16px; padding-bottom: 16px; padding-left: 12px;}
+    #div_rodape_cad_prod {margin-top: 0; padding-bottom: 0; padding-left: 0;}
+    #div_retorno_cad_prod {margin-top: 5px; padding-bottom: 0; width: 50%;}
     #div_categoria {margin-top: 5.6%;}
-    
+    #msgErroCadProduto {padding-top: 5px; padding-bottom: 5px; margin-top: 2%; text-align: center; width: 104%;}
+    #msgCadProdutoSuccess {padding-top: 5px; padding-bottom: 5px; width: 104%; text-align: center;}
+
 }

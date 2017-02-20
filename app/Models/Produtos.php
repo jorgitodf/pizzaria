@@ -81,7 +81,11 @@ class Produtos extends BaseModel {
     function getProd_nome_imagem() {
         return $this->prod_nome_imagem;
     }
-
+    
+    /**
+     * @param type $nome_produto
+     * @return type
+     */
     function setNome_produto($nome_produto) {
         if (Helpers::validaNomeProduto($nome_produto) == true) {
             return Helpers::validaNomeProduto($nome_produto);
@@ -90,6 +94,10 @@ class Produtos extends BaseModel {
         }
     }
 
+    /**
+     * @param type $descricao
+     * @return type
+     */
     function setDescricao($descricao) {
         if (Helpers::validaDescricaoProduto($descricao) == true) {
             return Helpers::validaDescricaoProduto($descricao);
@@ -101,7 +109,11 @@ class Produtos extends BaseModel {
     function setVolume($volume) {
         $this->volume = $volume;
     }
-
+    
+    /**
+     * @param type $tamanho
+     * @return type
+     */
     function setTamanho($tamanho) {
         if (Helpers::validaTamanhoProduto($tamanho) == true) {
             return Helpers::validaTamanhoProduto($tamanho);
@@ -110,6 +122,10 @@ class Produtos extends BaseModel {
         }
     }
 
+    /**
+     * @param type $preco_compra
+     * @return type
+     */
     function setPreco_compra($preco_compra) {
         if (Helpers::validaPrecoProduto($preco_compra) == true) {
             return Helpers::validaPrecoProduto($preco_compra);
@@ -118,6 +134,10 @@ class Produtos extends BaseModel {
         }
     }
     
+    /**
+     * @param type $categoria
+     * @return type
+     */
     public function setId_categoria($categoria) {
         if (Helpers::validaCategoriaProduto($categoria) == true) {
             return Helpers::validaCategoriaProduto($categoria);
@@ -126,10 +146,22 @@ class Produtos extends BaseModel {
         }
     }
 
+    /**
+     * @param type $data_compra
+     * @return type
+     */
     function setData_compra($data_compra) {
-        $this->data_compra = $data_compra;
+        if (Helpers::validaDataCompraProduto($data_compra) == true) {
+            return Helpers::validaDataCompraProduto($data_compra);
+        } else {
+            $this->data_compra = Helpers::formataData($data_compra);
+        }
     }
-
+    
+    /**
+     * @param type $qtd_comprada
+     * @return type
+     */
     function setQtd_comprada($qtd_comprada) {
         if (Helpers::validaQuantidadeProduto($qtd_comprada) == true) {
             return Helpers::validaQuantidadeProduto($qtd_comprada);
@@ -138,15 +170,33 @@ class Produtos extends BaseModel {
         }
     }
 
+    /**
+     * @param type $prod_nome_imagem
+     * @return type
+     */
     function setProd_nome_imagem($prod_nome_imagem) {
-        $this->prod_nome_imagem = $prod_nome_imagem;
+        if (Helpers::validaEnvioImagem($prod_nome_imagem) == true) {
+            return Helpers::validaEnvioImagem($prod_nome_imagem);
+        } else {
+            if ($prod_nome_imagem['type'] == 'image/png') {
+                $md5imagem = md5(time().rand(0,9999)).'.png';
+            } elseif ($prod_nome_imagem['type'] == 'image/jpeg') {
+                $md5imagem = md5(time().rand(0,9999)).'.jpeg';
+            } else {
+                $md5imagem = md5(time().rand(0,9999)).'.jpg';
+            }
+            $this->prod_nome_imagem = $md5imagem;
+        }
     }
-
         
     public function getIdCategoria() {
         return $this->idCategoria;
     }
 
+    /**
+     * @param type $idCategoria
+     * @return boolean
+     */
     public function setIdCategoria($idCategoria) {
         if (is_numeric($idCategoria)) {
             $this->idCategoria = $idCategoria;
@@ -155,6 +205,10 @@ class Produtos extends BaseModel {
         }
     }
     
+    /**
+     * @param type $categoria
+     * @return boolean
+     */
     public function getAllProdutosByCategoria($categoria) {
         try {
             $query = "SELECT prod.id_produto as id, prod.descricao as descricao, concat(prod.nome_produto,' - ', prod.tamanho) as produto, prod.volume as vol, "
@@ -179,6 +233,35 @@ class Produtos extends BaseModel {
         }
     }
 
-
+    /**
+     * @return int
+     */
+    public function cadastrarProduto() {
+        try {
+            $this->pdo->beginTransaction();
+            $query = "INSERT INTO {$this->table} (nome_produto, descricao, volume, tamanho, preco_compra, data_compra, "
+                . "qtd_comprada, prod_nome_imagem, fk_id_categoria) VALUES (?,?,?,?,?,?,?,?,?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $this->nome_produto, PDO::PARAM_STR);
+            $stmt->bindValue(2, $this->descricao, PDO::PARAM_STR);
+            $stmt->bindValue(3, empty($this->volume) || $this->volume = "" ? "" : $this->volume, PDO::PARAM_STR);
+            $stmt->bindValue(4, $this->tamanho, PDO::PARAM_STR);
+            $stmt->bindValue(5, $this->preco_compra, PDO::PARAM_STR);
+            $stmt->bindValue(6, $this->data_compra, PDO::PARAM_STR);
+            $stmt->bindValue(7, $this->qtd_comprada, PDO::PARAM_INT);
+            $stmt->bindValue(8, $this->prod_nome_imagem, PDO::PARAM_STR);
+            $stmt->bindValue(9, $this->idCategoria, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->pdo->commit();
+            return 1;
+        } catch (PDOException $exc) {
+            $this->pdo->rollback();
+            if ($exc->getCode() == '42S02') {
+                return "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            } else {
+                return $exc->getMessage();
+            }
+        } 
+    }
     
 }

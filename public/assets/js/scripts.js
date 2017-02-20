@@ -31,20 +31,21 @@ $(document).ready(function () {
         $("#form_cad_produto").submit(function(e) {
             $(".msgError").html("");
             $(".msgError").css("display", "none");
+            var formData = new FormData(this);
             e.preventDefault();
             $.ajax({
                 type: "POST",
                 url: $(this).attr("action"),
-                data: $(this).serialize(),
+                data: formData,
                 dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData:false,
                 success: function (retorno) {
-                    if (retorno.status === 'error' ){
+                    if (retorno.status === 'error' ) {
                         $('.retorno').html('<div class="alert alert-danger msgError" id="msgErroCadProduto">' + retorno.message + '</div>');
                     } else if (retorno.status === 'success'){
-                        $('.retorno').html('<div class="alert alert-success msgSuccess" id="">' + retorno.message + '</div>');
-                    }
-                    else {
-                        alert(retorno);
+                        $('.retorno').html('<div class="alert alert-success msgSuccess" id="msgCadProdutoSuccess">' + retorno.message + '</div>');
                     }
                 },
                 fail: function(){
