@@ -21,6 +21,55 @@ abstract class Helpers {
         return false;
     }
     
+    public static function validaNomeProduto($string) {
+        if (empty($string) || $string = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha o Nome do Produto!');
+            return $json;
+        } 
+        return false;
+    }
+    
+    public static function validaDescricaoProduto($string) {
+        if (empty($string) || $string = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha a Descrição do Produto!');
+            return $json;
+        } 
+        return false;
+    }
+    
+    public static function validaTamanhoProduto($string) {
+        if (empty($string) || $string = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha o Tamanho do Produto!');
+            return $json;
+        } 
+        return false;
+    }
+    
+    public static function validaPrecoProduto($preco) {
+        if (empty($preco) || $preco = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha o Preço de Compra do Produto!');
+            return $json;
+        } 
+        return false;
+    }
+    
+    public static function validaCategoriaProduto($cat) {
+        if (empty($cat) || $cat = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha a Categoria do Produto!');
+            return $json;
+        } 
+        return false;
+    }
+    
+    public static function validaQuantidadeProduto($qtd) {
+        $qtde = (int)$qtd;
+        if (empty($qtde) || $qtde = "") {
+            $json = array('status' => 'error', 'message' => 'Preencha a Quantidade Comprada do Produto!');
+            return $json;
+        }
+        return false;
+    }
+    
     public static function validaNomeGrupoPermissao($string) {
         $array = array('erroNomeGrupo'=>'');
         if (empty($string) || $string = "") {
@@ -199,6 +248,12 @@ abstract class Helpers {
     
     public static function formataCep($cep) {
 	return $cep_formatado = str_replace("-","", $cep);
+    }
+    
+    public static function formataPreço($valor) {
+        $valor2 = str_replace(',', '.', $valor);
+        $valor3 = trim(str_replace('R$ ', '', $valor2));
+        return $valor3;
     }
 
 }

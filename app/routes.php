@@ -7,6 +7,7 @@ $route[] = ['/login/termos', 'LoginController@verTermo'];
 $route[] = ['/login/logout', 'LoginController@logout'];
 $route[] = ['/login/senha', 'LoginController@recuperarSenha'];
 $route[] = ['/produtos', 'ProdutoController@index'];
+$route[] = ['/produto/cadastrar', 'ProdutoController@cadastrar'];
 $route[] = ['/cadastrar', 'CadastroController@index'];
 $route[] = ['/cadastrar/endereco', 'CadastroController@cadastrarEndereco'];
 $route[] = ['/cadastrar/bairro', 'CadastroController@cadastrarBairro'];

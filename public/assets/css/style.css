@@ -620,10 +620,44 @@
         color: white;
         background-color: #A0522D;
     }
+    #dropdown-content {
+        display: none;
+        margin-top: 2px;
+        margin-left: -45%;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
+    #ul_logout > li > a {
+        color: white;
+    }
+    #ul_nav_nome_user {
+        margin-left: 45%;
+        margin-top: 1.1%;
+    }
+    #ul_nav_nome_user > li > span {
+        color: white;
+    }
+    #ul_nav_nome_user_admin {
+        margin-left: 20%;
+        margin-top: 1.1%;
+    }
+    #ul_nav_nome_user_admin > li > span {
+        color: white;
+    }
     #nav_bar_admin {
-        margin-left: 15%;
+        margin-left: 8%;
     }
     #nav_bar_admin > li > a {
+        color: white;
+        background-color: #A0522D;
+    }
+    #nav_bar_menu_cadastros {
+        margin-left: 5%;
+    }
+    #nav_bar_menu_cadastros > li > a {
         color: white;
         background-color: #A0522D;
     }
@@ -637,16 +671,18 @@
         padding: 12px 16px;
         z-index: 1;
     }
-    
-    #dropdown-content {
+    #dropdown-content_menu_cad {
         display: none;
         margin-top: 2px;
-        margin-left: -45%;
+        margin-left: -35%;
         background-color: #f9f9f9;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 12px 16px;
         z-index: 1;
+    }
+    #dropdown-content_menu_cad > li > a {
+        text-align: center;
     }
     #ul_logout > li > a {
         color: white;
@@ -1106,7 +1142,7 @@
         font-weight: bold;
     }
     
-    /*PÁGINA HOME CLIENTE*/
+   /*PÁGINA HOME CLIENTE*/
     #div_cardapio_body {
         margin-left: 12%;
     }
@@ -1135,38 +1171,73 @@
     #div_imagem_produto {
         float: left;
         width: 18%;
-        padding-top: 15px;
-        padding-bottom: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
+    #figure_div {
+        border: white 1px solid;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        
+    }
+    #imagem {
+        height: 50px;
+    }
+    
     #div_desc_produto {
         width: 58%;
         float: left;
-        padding-top: 7px;
+        padding-top: 15px;
+        padding-left: 10px;
     }
     #div_preco_produto {
         width: 15%;
         margin-left: 6%;
         padding-left: 18px;
         float: left;
-        padding-top: 22px;
+        padding-top: 35px;
         padding-bottom: 10px;
     }
     #div_produto_add_car {
         width: 3%;
         float: left;
-        padding-top: 22px;
+        padding-top: 35px;
         padding-bottom: 10px;
         padding-left: 2px;
     }
     #div_produto_menu {
-        padding-left: 5px;
-        padding-right: 2px;
+        padding-left: 0;
+        padding-right: 0;
         padding-top: 10px;
         padding-bottom: 10px;
         background-color: white;
     }
     #div_row_prod_menu {
-        background-color: #f9f9f9;
+        background-color: #D3D3D3;
+        height: 91px;
     }
+    #div_row_sem_prod_cat {
+        background-color: #D3D3D3;
+        height: 91px;
+        padding-top: 35px;
+    }
+    #div_row_sem_prod_cat > p {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+    .cor_cinza_claro {background-color: #D3D3D3;}
+
+    /*PÁGINA CADASTRO DE PRODUTOS*/
+    #div_form_cad_produtos {margin-left: 16%; margin-top: 2%; padding: 0 0 0 0;}
+    #div_form_cad_produtos_header {padding-top: 8px; padding-bottom: 0; text-align: center;}
+    #div_form_cad_produtos_header > p {font-size: 20px; font-weight: 700;}
+    #div_form_cad_produtos_body {padding: 0 0 0 0;}
+    #div_form_cad_produtos_left {padding: 12px 10px 10px 10px;}
+    #div_form_cad_produtos_right {padding: 12px 10px 10px 10px;}
+    #imagem {height: 36px;}
+    #div_btn_cad_prod {margin-top: 10px; margin-bottom: 10px;}
+    #msgErroCadProduto {text-align: center;}
+    #div_categoria {margin-top: 5.6%;}
     
 }

@@ -1,5 +1,59 @@
 $(document).ready(function () {
     
+    //BUSCAR DADOS CATEGORIA PARA PREENCHER COMBOBOX NO CADASTRO DE PRODUTOS
+    var buscar_menu = $("#categoria").attr("data-toggle");
+        $.ajax({
+            type: "POST",
+            url: "/menu/buscar",
+            data: {buscar_menu: buscar_menu},
+            dataType: 'json',
+            success: function (retorno) {
+                if (retorno.status === 'error' ) {
+                    Reset();
+                } else if (retorno.status === 'success') {
+                    var option = '<option value="">Selecionar Categoria</option>';
+                    $.each(retorno.message, function(i, obj) {
+                        option += '<option value="'+ obj.id_categoria + '">' + obj.categoria + '</option>';
+                    });
+                    $('#categoria').html(option); 
+                }
+                else {
+                    alert(retorno);
+                }
+            },
+            fail: function(){
+                alert('ERRO: Falha ao carregar o script.');
+            }
+        });
+        
+    //CADASTRO DE PRODUTOS
+     $(function () {
+        $("#form_cad_produto").submit(function(e) {
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno.status === 'error' ){
+                        $('.retorno').html('<div class="alert alert-danger msgError" id="msgErroCadProduto">' + retorno.message + '</div>');
+                    } else if (retorno.status === 'success'){
+                        $('.retorno').html('<div class="alert alert-success msgSuccess" id="">' + retorno.message + '</div>');
+                    }
+                    else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
+    
     //BUSCAR DADOS CATEGORIA PARA PREENCHER MENU NO HOME CLIENTE
     var buscar_menu = $("#menu_cardapio").attr("data-toggle");
         $.ajax({
