@@ -43,7 +43,8 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 cor_cinza_claro" id="div_rodape_cad_prod">
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6" id="div_btn_cad_prod">
-                        <button type="submit" class="btn btn-success btn-sm" id="btn_cad_produtos">Cadastrar</button>
+                        <button type="reset" class="btn btn-success btn-sm" id="btn_new_produtos">Novo</button>
+                        <button type="submit" class="btn btn-success btn-sm" id="btn_cad_produtos" disabled="true">Cadastrar</button>
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6 retorno" id="div_retorno_cad_prod">
                     </div>

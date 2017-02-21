@@ -106,8 +106,15 @@ class Produtos extends BaseModel {
         }
     }
 
+    /**
+     * @param string $volume
+     */
     function setVolume($volume) {
-        $this->volume = $volume;
+        if (!empty($volume)) {
+            $this->volume = $volume;
+        } else {
+            $this->volume = "";
+        }
     }
     
     /**
@@ -244,7 +251,7 @@ class Produtos extends BaseModel {
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(1, $this->nome_produto, PDO::PARAM_STR);
             $stmt->bindValue(2, $this->descricao, PDO::PARAM_STR);
-            $stmt->bindValue(3, empty($this->volume) || $this->volume = "" ? "" : $this->volume, PDO::PARAM_STR);
+            $stmt->bindValue(3, $this->volume, PDO::PARAM_STR);
             $stmt->bindValue(4, $this->tamanho, PDO::PARAM_STR);
             $stmt->bindValue(5, $this->preco_compra, PDO::PARAM_STR);
             $stmt->bindValue(6, $this->data_compra, PDO::PARAM_STR);
@@ -252,6 +259,11 @@ class Produtos extends BaseModel {
             $stmt->bindValue(8, $this->prod_nome_imagem, PDO::PARAM_STR);
             $stmt->bindValue(9, $this->idCategoria, PDO::PARAM_INT);
             $stmt->execute();
+            $id = $this->pdo->lastInsertId();
+            $query = "CALL sp_atualiza_estoque_produtos(?)";
+            $stmtP = $this->pdo->prepare($query);
+            $stmtP->bindValue(1, $id, PDO::PARAM_INT);
+            $stmtP->execute();
             $this->pdo->commit();
             return 1;
         } catch (PDOException $exc) {

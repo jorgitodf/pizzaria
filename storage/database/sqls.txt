@@ -85,6 +85,45 @@ SHOW TRIGGERS;
 DROP TRIGGER tg_atualiza_tab_produto_venda;
 
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insere_produto_tb_venda`(p_id INT)
+BEGIN
+	declare result varchar(8);
+	/* Criando variaveis do loop */
+	declare done int default false;
+	declare idLoop int;
+	declare pcLoop decimal(8,2);
+    
+	/* Criando Cursor para o LOOP */
+	declare crTB_PRODUTO cursor for SELECT
+		p.id_produto as id,
+		p.preco_compra as pc
+	from tb_produto p
+	where id_produto = p_id;
+	-- DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
+	declare continue handler for not found set done = true;
+    
+    OPEN crTB_PRODUTO;
+    
+	-- LOOP
+	read_loop: loop 
+	  -- Obtem os valores da linha
+	  fetch crTB_PRODUTO into idLoop, pcLoop;
+
+	  if done then
+		leave read_loop;
+	  end if;
+
+	end loop;
+    
+    CLOSE crTB_PRODUTO;
+    
+    SET result = (SELECT ativo FROM tb_produto_venda WHERE ativo = 'true' AND fk_id_produto = p_id);
+    
+    if result IS NULL then
+		INSERT INTO tb_produto_venda (preco_venda, ativo, data_cadastro, fk_id_produto) VALUES (fncCalculaPrecoVendaProduto(pcLoop), 'true', NOW(), idLoop);
+    end if;
+
+END
 
 
 DELIMITER $$
@@ -171,8 +210,4 @@ SELECT * FROM tb_produto_venda;
 ALTER TABLE tb_produto_venda AUTO_INCREMENT = 1;
 
 
-1	Pizza Calabresa			Júnior	18.00	2017-02-17	30	30	calabresa.jpg	4
-2	Coca Cola	Coca Cola de 600 ML	600ml	Médio	3.50	2017-02-17	35	35	coca_cola_600.jpg	5
-3	Crepe	Recheio de Presunto e Mussarela		Pequeno	4.50	2017-02-17	28	28	crepe_queijo.jpg	6
-4	Guaraná	Guaraná de 600 ML	600ml	Médio	3.85	2017-02-17	32	32	guarana_600.jpg	5
-5	Pizza	Pizza com recheio	1	Grande	20.00	2017-02-20	60		b77e62c3107ee4d604fbca7c5965a900.png	4
+

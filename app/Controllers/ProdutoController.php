@@ -51,6 +51,8 @@ class ProdutoController extends BaseController {
                 $json = $this->modelProdutos->setNome_produto($nome_produto);
             } elseif ($this->modelProdutos->setDescricao($descricao_produto)) {
                 $json = $this->modelProdutos->setDescricao($descricao_produto);
+            } elseif ($this->modelProdutos->setVolume($volume)) {
+                $json = $this->modelProdutos->setVolume($volume);
             } elseif ($this->modelProdutos->setTamanho($tamanho)) {
                 $json = $this->modelProdutos->setTamanho($tamanho);
             } elseif ($this->modelProdutos->setPreco_compra($preco_compra)) {

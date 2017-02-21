@@ -27,6 +27,9 @@ $(document).ready(function () {
         });
         
     //CADASTRO DE PRODUTOS
+    $('#btn_new_produtos').click(function () {
+        $("#btn_cad_produtos").removeAttr('disabled');
+    });
      $(function () {
         $("#form_cad_produto").submit(function(e) {
             $(".msgError").html("");
@@ -46,6 +49,7 @@ $(document).ready(function () {
                         $('.retorno').html('<div class="alert alert-danger msgError" id="msgErroCadProduto">' + retorno.message + '</div>');
                     } else if (retorno.status === 'success'){
                         $('.retorno').html('<div class="alert alert-success msgSuccess" id="msgCadProdutoSuccess">' + retorno.message + '</div>');
+                        $("#btn_cad_produtos").attr('disabled', 'disabled');
                     }
                 },
                 fail: function(){
