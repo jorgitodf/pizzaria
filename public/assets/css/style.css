@@ -549,25 +549,28 @@
     }
     
     #div_desc_produto {
-        width: 58%;
+        width: 67%;
         float: left;
         padding-top: 15px;
         padding-left: 10px;
+        padding-right: 0;
+        font-size: 12px;
     }
     #div_preco_produto {
-        width: 15%;
-        margin-left: 6%;
-        padding-left: 18px;
+        width: 14%;
+        margin-left: 0;
+        padding-left: 8px;
         float: left;
         padding-top: 35px;
-        padding-bottom: 10px;
+        padding-bottom: 0;
+        font-size: 12px;
     }
     #div_produto_add_car {
         width: 3%;
         float: left;
         padding-top: 35px;
         padding-bottom: 10px;
-        padding-left: 2px;
+        padding-left: 1px;
     }
     #div_produto_menu {
         padding-left: 0;
@@ -578,7 +581,9 @@
     }
     #div_row_prod_menu {
         background-color: #D3D3D3;
-        height: 91px;
+        height: 80px;
+        padding-left: 8px;
+        padding-right: 0;
     }
     #div_row_sem_prod_cat {
         background-color: #D3D3D3;
@@ -591,6 +596,9 @@
         font-weight: bold;
     }
     .cor_cinza_claro {background-color: #D3D3D3;}
+    #carrinho_compra {padding: 10px; left: 62%; position:fixed; width: 345px;}
+    #div_body_carrinho {padding: 10px; left: 62%; position:fixed; width: 345px; margin-top: 3.8%; height: 30%;}
+    #icon_add_prod_carrinho {color: green;}
 
     /*PÁGINA CADASTRO DE PRODUTOS*/
     #div_form_cad_produtos {margin-left: 16%; margin-top: 2%; padding: 0 0 0 0;}
@@ -603,9 +611,13 @@
     #div_btn_cad_prod {padding-top: 16px; padding-bottom: 16px; padding-left: 12px;}
     #div_rodape_cad_prod {margin-top: 0; padding-bottom: 0; padding-left: 0;}
     #div_retorno_cad_prod {margin-top: 5px; padding-bottom: 0; width: 50%;}
-    #div_categoria {margin-top: 5.6%;}
+    #div_categoria {margin-top: 6%;}
     #msgErroCadProduto {padding-top: 5px; padding-bottom: 5px; margin-top: 2%; text-align: center; width: 104%;}
-    #msgCadProdutoSuccess {padding-top: 5px; padding-bottom: 5px; width: 104%; text-align: center;}
+    #msgCadProdutoSuccess {padding-top: 5px; padding-bottom: 5px; margin-top: 2%; width: 104%; text-align: center;}
+    #btn_cad_produtos, #btn_new_produtos {width: 80px;}
+    #img_carrinho {width: 30px;}
+    #fig_img_carrinho {width: 90px; float: left;}
+    #div_frase_carrinho {float: left; padding: 5px; height: 30px;}
 
 }    
 

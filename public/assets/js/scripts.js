@@ -95,26 +95,28 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (retorno) {
                 if (retorno.status === 'error' ) {
-
+                    if (retorno.message === 'limpar') {
+                        $(document).ready(function() {
+                            $('.div_menu_prod').remove();
+                        });
+                    }
                 } else if (retorno.status === 'success') {
                     var div = '';
                     $.each(retorno.message, function(i, obj) {
-                        div += '<div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8" id="div_produto_menu">';
-                        div += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu" name="idProduto" value="'+ obj.id + '">';
+                        div += '<div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8 div_menu_prod" id="div_produto_menu">';
+                        div += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="div_row_prod_menu">';
                         div += '<div class="" id="div_imagem_produto">';
                         div += '<figure class="thumbnail" id="figure_div">';
                         div += '<img src="/imgs/produtos/'+ obj.imagem +'" id="imagem"/>';
                         div += '</figure>';
                         div += '</div>';
-                        div += '<div class="" id="div_desc_produto">';
+                        div += '<div class="div_desc_prod" id="div_desc_produto">';
                         div += '<p>'+ obj.produto + '</p>';
                         div += '<p>'+ obj.descricao + '</p>';
+                        div += '<input type="hidden" name="id_produto" id="id_produto" value="'+ obj.id +'">';
                         div += '</div>';
                         div += '<div class="" id="div_preco_produto">';
-                        div += '<p>R$ '+ obj.valor + '</p>';
-                        div += '</div>';
-                        div += '<div class="" id="div_produto_add_car">';
-                        div += '<p><span class="glyphicon glyphicon-plus"></span></p>';
+                        div += '<p>R$ '+ obj.valor + '&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus" id="icon_add_prod_carrinho"></span></p>';
                         div += '</div>';
                         div += '</div>';
                         div += '</div>';
@@ -130,7 +132,30 @@ $(document).ready(function () {
             }
         });
     });
-        
+    
+    //ADICIONA AO CARRINHO AO CLICAR NO PRODUTO LISTADO PELO MENU
+    $(document).on('click', '.div_desc_prod', function() {
+        var id = $(this).find('input').val();
+        $.ajax({
+            type: "POST",
+            url: "/carrinho/preencher",
+            data: {id_produto: id},
+            dataType: 'json',
+            success: function (retorno) {
+                if (retorno.status === 'error' ) {
+                    
+                } else if (retorno.status === 'success') {
+
+                }
+                else {
+                    alert(retorno);
+                }
+            },
+            fail: function(){
+                alert('ERRO: Falha ao carregar o script.');
+            }
+        });
+    });
         
     $("#sigla_uf").change(function(e){
         var sigla_uf = $("#sigla_uf").val();

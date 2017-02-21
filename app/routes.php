@@ -14,6 +14,7 @@ $route[] = ['/cadastrar/bairro', 'CadastroController@cadastrarBairro'];
 $route[] = ['/uf/buscar', 'AjaxController@buscarUf'];
 $route[] = ['/menu/buscar', 'AjaxController@buscarMenu'];
 $route[] = ['/menu/buscar-produtos', 'AjaxController@buscarProdutosByCategoria'];
+$route[] = ['/carrinho/preencher', 'AjaxController@preencherCarrinho'];
 $route[] = ['/cidade/buscar', 'AjaxController@buscarCidade'];
 $route[] = ['/permissoes', 'PermissaoController@index'];
 $route[] = ['/permissoes/excluir/{id}', 'PermissaoController@excluir'];

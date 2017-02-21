@@ -218,9 +218,17 @@ class Produtos extends BaseModel {
      */
     public function getAllProdutosByCategoria($categoria) {
         try {
-            $query = "SELECT prod.id_produto as id, prod.descricao as descricao, concat(prod.nome_produto,' - ', prod.tamanho) as produto, prod.volume as vol, "
-                    . "prod.qtd_estoque as qtd, prod.valor as valor, prod.prod_nome_imagem as imagem, prod.fk_id_categoria as idCategoria FROM {$this->table} as prod "
-                    . "WHERE fk_id_categoria = ?";
+            if ($categoria->id_categoria == 1) {
+                $query = "SELECT pv.id_produto_venda AS id, prod.descricao as descricao, concat(prod.nome_produto,' - ', 
+                    prod.tamanho) as produto, prod.volume as vol, pv.preco_venda AS valor, prod.prod_nome_imagem AS imagem, 
+                    prod.fk_id_categoria as idCategoria FROM {$this->table} AS prod JOIN tb_produto_venda AS pv ON (prod.id_produto = 
+                    pv.fk_id_produto) WHERE pv.ativo = 'true' ORDER BY prod.fk_id_categoria ASC"; 
+            } else {
+                $query = "SELECT pv.id_produto_venda AS id, prod.descricao as descricao, concat(prod.nome_produto,' - ', prod.tamanho) 
+                    as produto, prod.volume as vol, pv.preco_venda AS valor, prod.prod_nome_imagem AS imagem, prod.fk_id_categoria as 
+                    idCategoria FROM {$this->table} AS prod JOIN tb_produto_venda AS pv ON (prod.id_produto = pv.fk_id_produto) 
+                    WHERE prod.fk_id_categoria = ? AND pv.ativo = 'true'";
+            }
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(1, $categoria->id_categoria, PDO::PARAM_INT);
             $stmt->execute();
@@ -266,6 +274,29 @@ class Produtos extends BaseModel {
             $stmtP->execute();
             $this->pdo->commit();
             return 1;
+        } catch (PDOException $exc) {
+            $this->pdo->rollback();
+            if ($exc->getCode() == '42S02') {
+                return "A Tabela <b>{$this->table}</b> Ainda Não Existe..";
+            } else {
+                return $exc->getMessage();
+            }
+        } 
+    }
+    
+    public function getProdutoById($id_produto) {
+        try {
+            $this->pdo->beginTransaction();
+            $query = "SELECT pv.id_produto_venda AS id, CONCAT(prod.nome_produto,' - ', prod.tamanho) AS prod, pv.preco_venda AS 
+                valor FROM tb_produto_venda AS pv JOIN {$this->table} AS prod ON (prod.id_produto = pv.fk_id_produto) WHERE 
+                pv.fk_id_produto = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(1, $id_produto, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->pdo->commit();
+            $result = $stmt->fetch();
+            $stmt->closeCursor();
+            return $result;
         } catch (PDOException $exc) {
             $this->pdo->rollback();
             if ($exc->getCode() == '42S02') {

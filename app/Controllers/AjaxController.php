@@ -77,12 +77,25 @@ class AjaxController extends BaseController {
     public function buscarProdutosByCategoria() {
         if (isset($_POST['menu'])) {
            $idCategoria = (int) filter_input(INPUT_POST, 'menu', FILTER_SANITIZE_NUMBER_INT); 
-           $categoria = $this->modelCategoria->getCategoriaById($idCategoria);
-           if ($this->modelProdutos->getAllProdutosByCategoria($categoria) == true) {
-               $json = array('status' => 'success', 'message' => $this->modelProdutos->getAllProdutosByCategoria($categoria));
+           if ($idCategoria == 0) {
+               $json = array('status' => 'error', 'message' => 'limpar');
            } else {
-               $json = array('status' => 'error', 'message' => false);
+                $categoria = $this->modelCategoria->getCategoriaById($idCategoria);
+                if ($this->modelProdutos->getAllProdutosByCategoria($categoria) == true) {
+                    $json = array('status' => 'success', 'message' => $this->modelProdutos->getAllProdutosByCategoria($categoria));
+                } else {
+                    $json = array('status' => 'error', 'message' => false);
+                }
            }
+           echo json_encode($json);
+        }
+    }
+    
+    public function preencherCarrinho() {
+        if (isset($_POST['id_produto'])) {
+           $id_produto = (int) filter_input(INPUT_POST, 'id_produto', FILTER_SANITIZE_NUMBER_INT); 
+           $produto = $this->modelProdutos->getProdutoById($id_produto);
+           print_r($produto);exit;
            echo json_encode($json);
         }
     }

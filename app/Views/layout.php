@@ -89,6 +89,44 @@
                     monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
                 });
             });
+            $(function(){
+                var jElement = $('#carrinho_compra');
+                $(window).scroll(function(){
+                    if ( $(this).scrollTop() > 200 ){
+                        jElement.css({
+                            'position':'fixed',
+                            'top':'40px',
+                            'width':'344px'
+                        });
+                    }else{
+                        jElement.css({
+                            'position':'fixed',
+                            'top':'auto',
+                            'width':'344px'
+                        });
+                    }
+                });
+
+            });
+            $(function(){
+                var jElement = $('#div_body_carrinho');
+                $(window).scroll(function(){
+                    if ( $(this).scrollTop() > 200 ){
+                        jElement.css({
+                            'position':'fixed',
+                            'top':'40px',
+                            'width':'344px'
+                        });
+                    }else{
+                        jElement.css({
+                            'position':'fixed',
+                            'top':'auto',
+                            'width':'344px'
+                        });
+                    }
+                });
+
+            });
         </script>
     </body>
 </html>

@@ -17,6 +17,19 @@
                     <span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-search"></i></span>
                 </div>
             </div>
+            <div class="row col-lg-4 col-md-4 col-sm-4 col-xs-4 borda_cinza" id="carrinho_compra">
+                <div id="div_cabecalho_carrinho">
+                    <figure class="" id="fig_img_carrinho">
+                        <img src="/imgs/carrinho.png" id="img_carrinho"/>
+                    </figure>
+                    <div class="" id="div_frase_carrinho">
+                        <p>Seu Carrinho de Compras</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-lg-4 col-md-4 col-sm-4 col-xs-4 borda_cinza" id="div_body_carrinho">
+
+            </div>
             <div class="row-fluid" id="produto_menu">
             </div>
             <div class="row-fluid" id="produto_sem_cad">
